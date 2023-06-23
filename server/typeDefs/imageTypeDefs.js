@@ -1,6 +1,4 @@
-const { gql } = require("apollo-server");
-
-const imageTypeDefs = gql`
+const imageTypeDefs = `#graphql
   type Image {
     id: ID!
     filename: String!

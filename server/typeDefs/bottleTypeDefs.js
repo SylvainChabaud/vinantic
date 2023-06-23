@@ -1,6 +1,4 @@
-const { gql } = require("apollo-server");
-
-const bottleTypeDefs = gql`
+const bottleTypeDefs = `#graphql
   type Bottle {
     id: ID!
     name: String!

@@ -1,6 +1,4 @@
-const { gql } = require("apollo-server");
-
-const userTypeDefs = gql`
+const userTypeDefs = `#graphql
   type AuthResult {
     ok: Boolean!
     message: String!
