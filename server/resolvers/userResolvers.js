@@ -1,4 +1,3 @@
-const { connectToDb } = require("../connectToDb");
 const bcrypt = require("bcrypt");
 const queryAsync = require("./utils");
 

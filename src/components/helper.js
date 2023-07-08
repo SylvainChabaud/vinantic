@@ -1,5 +1,7 @@
 import { jsPDF } from "jspdf";
-import { sort, ascend, prop, pipe, groupBy, map, toPairs, fromPairs, reduce, reduceBy, head, last } from "ramda";
+import { prop, head, last } from "ramda";
+
+export const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
 export const extractImageName = (filename) => {
   const nameWithExtension = filename.split("\\").pop(); // Récupère le nom de fichier avec l'extension
@@ -41,11 +43,13 @@ export const filterAndSortWineList = ({ wineList, setFilteredWinesList, searchTe
   setFilteredWinesList(filteredList);
 };
 
-export const exportVinanticPdf = (winesList) => {
+export const exportVinanticPdf = ({ winesList, setIsPdfLoading }) => {
+  setIsPdfLoading(true);
+
   /* MILLESIMES SORTED and GROUPED BY YEAR */
   const sortedWinesByYear = groupWinesByYear(winesList);
-  const firstMill = prop('year', head(sortedWinesByYear));
-  const lastMill = prop('year', last(sortedWinesByYear));
+  const firstMill = prop("year", head(sortedWinesByYear));
+  const lastMill = prop("year", last(sortedWinesByYear));
 
   if (winesList.length !== 0) {
     /* GET NAVIGATOR WIDTH */
@@ -183,6 +187,7 @@ export const exportVinanticPdf = (winesList) => {
     /* ADD AND SAVE MAIN DIV TO PDF SPLIT PAGE OPTION (PDF_Height) */
     pdf.html(globalDivPdf, { pagesplit: true }).then(() => {
       pdf.save("Catalogue de vins - Vinantic.pdf");
+      setIsPdfLoading(false);
     });
   }
 };

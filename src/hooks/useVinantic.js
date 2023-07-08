@@ -4,7 +4,8 @@ import { GET_BOTTLES } from "../graphql/bottleQueries";
 import { GET_IMAGES } from "../graphql/imageQueries";
 import { ITEMS_PER_PAGE, SEARCH_SELECTOR_OPTIONS } from "../constants";
 
-import { exportVinanticPdf, extractImageName, filterAndSortWineList, mergeWineInfosByRef } from "../components/helper";
+import { exportVinanticPdf, extractImageName, filterAndSortWineList, mergeWineInfosByRef, scrollToTop } from "../components/helper";
+import { isNilOrEmpty } from "ramda-adjunct";
 
 const useVinantic = () => {
   const [searchText, setSearchText] = useState("");
@@ -15,10 +16,16 @@ const useVinantic = () => {
   const [currentWineList, setCurrentWineList] = useState([]);
   const [imagesList, setImagesList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isPdfLoading, setIsPdfLoading] = useState(false);
 
   const { loading: bottlesLoading, error: bottlesError, data: bottlesData } = useQuery(GET_BOTTLES);
-
-  const { loading: imagesLoading, error: imagesError, data: imagesData } = useQuery(GET_IMAGES);
+  const {
+    loading: imagesLoading,
+    error: imagesError,
+    data: imagesData,
+  } = useQuery(GET_IMAGES, {
+    skip: isNilOrEmpty(bottlesData), // Skip the query if bottlesData is not available
+  });
 
   useEffect(() => {
     if (!bottlesLoading && bottlesData) {
@@ -77,6 +84,7 @@ const useVinantic = () => {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+    scrollToTop();
   };
 
   return {
@@ -85,10 +93,12 @@ const useVinantic = () => {
     sortBy,
     totalWines: filteredWinesList.length,
     winesList: currentWineList,
+    isPdfLoading,
+    isWinesLoading: imagesLoading || bottlesLoading,
     handleSearchChange,
     handleSortChange,
     handlePageChange,
-    handleGeneratePdf: () => exportVinanticPdf(mergedWinesInfos),
+    handleGeneratePdf: () => exportVinanticPdf({ winesList: mergedWinesInfos, setIsPdfLoading }),
   };
 };
 

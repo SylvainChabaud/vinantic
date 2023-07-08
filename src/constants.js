@@ -1,4 +1,4 @@
-export const ITEMS_PER_PAGE = 70; // Nombre d'éléments à afficher par page
+export const ITEMS_PER_PAGE = 50; // Nombre d'éléments à afficher par page
 
 export const SEARCH_SELECTOR_OPTIONS = {
   NO_SORT: "AUCUN TRI",
