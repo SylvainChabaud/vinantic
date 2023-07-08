@@ -2,14 +2,17 @@ const { concat } = require("ramda");
 const fs = require("fs");
 const path = require("path");
 const queryAsync = require("./utils");
+const { connectToDb } = require("../connectToDb");
 
 const IMAGES_ROOT_PATH = "../../src/assets/images/";
 const FOLDER_PATH = path.resolve(__dirname, "../../src/assets/images");
 
 const imageResolvers = {
   Query: {
-    getImages: async (_, __, { connection }) => {
+    getImages: async () => {
+      let connection;
       try {
+        connection = await connectToDb();
         const query = "SELECT * FROM images";
         const images = await queryAsync(connection)(query);
 
@@ -27,12 +30,19 @@ const imageResolvers = {
         };
       } catch (err) {
         throw new Error(err);
+      } finally {
+        if (connection) {
+          connection.end();
+          console.log("🚀 MySQL disconnected");
+        }
       }
     },
   },
   Mutation: {
-    setImages: async (_, __, { connection }) => {
+    setImages: async () => {
+      let connection;
       try {
+        const connection = await connectToDb();
         const files = fs.readdirSync(FOLDER_PATH);
         const imageFiles = files.filter((file) => path.extname(file).toLowerCase() === ".jpg");
 
@@ -44,10 +54,17 @@ const imageResolvers = {
         };
       } catch (err) {
         throw new Error(err);
+      } finally {
+        if (connection) {
+          connection.end();
+          console.log("🚀 MySQL disconnected");
+        }
       }
     },
-    deleteImages: async (_, __, { connection }) => {
+    deleteImages: async () => {
+      let connection;
       try {
+        connection = await connectToDb();
         const query = "DELETE FROM images";
         await queryAsync(connection)(query);
 
@@ -57,6 +74,11 @@ const imageResolvers = {
         };
       } catch (err) {
         throw new Error(err);
+      } finally {
+        if (connection) {
+          connection.end();
+          console.log("🚀 MySQL disconnected");
+        }
       }
     },
   },
