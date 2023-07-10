@@ -9,9 +9,9 @@ const VinanticRoutes = () => (
   <div className="h-screen bg-stone-100">
     <Router>
       <Routes>
-        <Route path="vinantic/millesimes" element={<VinanticPage />} />
+        <Route path="/" element={<VinanticPage />} />
         <Route
-          path="vinantic/admin"
+          path="admin"
           element={
             <ProtectedRoute>
               <AdminPage />

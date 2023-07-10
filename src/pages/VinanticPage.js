@@ -7,6 +7,9 @@ import Title from "../components/Title";
 import Pagination from "../components/Pagination";
 import { SEARCH_SELECTOR_OPTIONS } from "../constants";
 import { Loader } from "../components/Loader";
+import Description from "../components/Description";
+import { useTranslation } from "react-i18next";
+
 
 const VinanticPage = () => {
   const {
@@ -23,18 +26,26 @@ const VinanticPage = () => {
     handleGeneratePdf,
   } = useVinantic();
 
+  const { t } = useTranslation();
+
   return (
     <>
-      <div className="py-10 text-stone-700">
+      <div className="py-10">
         <Title />
+      </div>
+
+      <div className="pb-14 px-15vw border-b-2">
+        <Description />
       </div>
 
       {isWinesLoading ? (
         <div className="flex justify-center">
           <Loader size={100} />
         </div>
+      ) : totalWines === 0 ? (
+        <p className="mt-10 flex justify-center text-red-400">{t('warnings.no_wines_available')}</p>
       ) : (
-        <div className="flex flex-col bg-gray-100 px-5">
+        <div className="flex flex-col bg-gray-100 p-3vw pt-10">
           <div className="flex flex-row">
             <div className="w-64">
               <TextSearchInput searchText={searchText} handleSearchChange={handleSearchChange} />
@@ -59,19 +70,12 @@ const VinanticPage = () => {
             {isPdfLoading && <Loader size={50} />}
           </div>
 
-          {isWinesLoading && (
-            <div className="flex justify-center">
-              <Loader size={100} />
-            </div>
-          )}
-
           <div className="grid gap-5 2xl:grid-cols-5 xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 mt-10">
-            {totalWines !== 0 &&
-              winesList.map((wine) => (
-                <div key={`wine-${wine.id}`}>
-                  <WineCard wine={wine} />
-                </div>
-              ))}
+            {winesList.map((wine) => (
+              <div key={`wine-${wine.id}`}>
+                <WineCard wine={wine} />
+              </div>
+            ))}
           </div>
 
           <div className="mt-20 mb-10">
