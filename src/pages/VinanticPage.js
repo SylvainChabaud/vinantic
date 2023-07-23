@@ -10,7 +10,6 @@ import { Loader } from "../components/Loader";
 import Description from "../components/Description";
 import { useTranslation } from "react-i18next";
 
-
 const VinanticPage = () => {
   const {
     currentPage,
@@ -30,12 +29,14 @@ const VinanticPage = () => {
 
   return (
     <>
-      <div className="py-10">
-        <Title />
-      </div>
+      <div className="bg-stone-100">
+        <div className="py-10">
+          <Title />
+        </div>
 
-      <div className="pb-14 px-15vw border-b-2">
-        <Description />
+        <div className="pb-14 px-15vw border-b-2">
+          <Description />
+        </div>
       </div>
 
       {isWinesLoading ? (
@@ -43,7 +44,7 @@ const VinanticPage = () => {
           <Loader size={100} />
         </div>
       ) : totalWines === 0 ? (
-        <p className="mt-10 flex justify-center text-red-400">{t('warnings.no_wines_available')}</p>
+        <p className="mt-10 flex justify-center text-red-400">{t("warnings.no_wines_available")}</p>
       ) : (
         <div className="flex flex-col bg-gray-100 p-3vw pt-10">
           <div className="flex flex-row">

@@ -6,22 +6,20 @@ import ProtectedRoute from "./ProtectedRoute";
 import AdminPage from "../pages/AdminPage";
 
 const VinanticRoutes = () => (
-  <div className="h-screen bg-stone-100">
-    <Router>
-      <Routes>
-        <Route path="/" element={<VinanticPage />} />
-        <Route
-          path="admin"
-          element={
-            <ProtectedRoute>
-              <AdminPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="*" element={<NoMatchRoute />} />
-      </Routes>
-    </Router>
-  </div>
+  <Router>
+    <Routes>
+      <Route path="/" element={<VinanticPage />} />
+      <Route
+        path="admin"
+        element={
+          <ProtectedRoute>
+            <AdminPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="*" element={<NoMatchRoute />} />
+    </Routes>
+  </Router>
 );
 
 export default VinanticRoutes;

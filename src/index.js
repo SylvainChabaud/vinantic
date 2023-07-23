@@ -7,7 +7,6 @@ import i18n from "./trad/i18n";
 
 const client = new ApolloClient({
   uri: "https://tatiom-apis.fr/graphql",
-  // uri: "http://localhost:4000/graphql",
   cache: new InMemoryCache(),
 });
 
