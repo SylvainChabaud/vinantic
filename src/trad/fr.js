@@ -10,4 +10,12 @@ export const vinantic_french_traduction = {
   warnings: {
     no_wines_available: "Aucun millésime n'est disponible",
   },
+  banner: {
+    upload_pdf: "Télécharger le catalogue au format PDF.",
+    sorted_list: "La liste ci-dessous a été triées.",
+    no_sorted_list: "La liste ci-dessous n'a pas été triées.",
+    no_available_list: "Aucune bouteille n'est disponible.",
+    available_list: "{{ totalWines }} bouteilles sont disponibles. ",
+    page_info: "Vous êtes sur la page {{currentPage}} du catalogue. "
+  }
 };
