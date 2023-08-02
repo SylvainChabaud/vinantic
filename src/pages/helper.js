@@ -34,3 +34,4 @@ export const getImageSource = ({ bottle, imagesList }) => {
 
   return foundedImage && `data:${foundedImage.contentType};base64,${Buffer.from(foundedImage.data, "base64").toString("base64")}`;
 };
+

@@ -17,5 +17,12 @@ export const vinantic_french_traduction = {
     no_available_list: "Aucune bouteille n'est disponible.",
     available_list: "{{ totalWines }} bouteilles sont disponibles. ",
     page_info: "Vous êtes sur la page {{currentPage}} du catalogue. "
+  },
+  bottle: {
+    castle: "Château",
+    stock: "En stock :",
+    price: "Prix unitaire :",
+    unit: "€",
+    quality: "Qualité : "
   }
 };

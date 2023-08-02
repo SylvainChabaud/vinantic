@@ -4,19 +4,16 @@ import VinanticPage from "../pages/VinanticPage";
 import NoMatchRoute from "../pages/NoMatchPage";
 import ProtectedRoute from "./ProtectedRoute";
 import AdminPage from "../pages/AdminPage";
+import BottleInfosPage from "../pages/BottleInfosPage";
+import BottlePicPage from "../pages/BottlePicPage";
 
 const VinanticRoutes = () => (
   <Router>
     <Routes>
       <Route path="/" element={<VinanticPage />} />
-      <Route
-        path="admin"
-        element={
-          <ProtectedRoute>
-            <AdminPage />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/wine-bottle-informations/:id" element={<BottleInfosPage />} />
+      <Route path="/wine-bottle-pic/:id" element={<BottlePicPage />} />
+      <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>}/>
       <Route path="*" element={<NoMatchRoute />} />
     </Routes>
   </Router>

@@ -95,6 +95,7 @@ const useVinantic = () => {
     winesList: currentWineList,
     isPdfLoading,
     isWinesLoading: imagesLoading || bottlesLoading,
+    isWinesError: imagesError || bottlesError,
     handleSearchChange,
     handleSortChange,
     handlePageChange,

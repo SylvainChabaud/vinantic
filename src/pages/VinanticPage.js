@@ -36,7 +36,7 @@ const VinanticPage = () => {
       ) : totalWines === 0 ? (
         <p className="mt-10 flex justify-center text-red-400">{t("warnings.no_wines_available")}</p>
       ) : (
-        <div className="flex flex-col bg-gray-100 p-3vw pt-10">
+        <div className="flex flex-col bg-gray-100 p-[3vw] pt-10">
           <SearchInputs searchText={searchText} sortBy={sortBy} handleSearchChange={handleSearchChange} handleSortChange={handleSortChange} />
 
           <div className="mt-10">

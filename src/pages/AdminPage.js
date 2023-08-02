@@ -23,7 +23,7 @@ const AdminPage = () => {
     },
   });
 
-  const [deleteImages, { loading: deleteImagesLoading, error: deleteImagesError, data: deleteImagesData }] = useMutation(DELETE_IMAGES, {
+  const [deleteImages, { loading: deleteImagesLoading }] = useMutation(DELETE_IMAGES, {
     onError: (error) => setBackMessage(error.message),
     onCompleted: (data) => {
       const { ok, message } = data.deleteImages;
@@ -43,7 +43,7 @@ const AdminPage = () => {
     },
   });
 
-  const [setImages, { loading: setImagesLoading, error: setImagesError, data: setImagesData }] = useMutation(SET_IMAGES, {
+  const [setImages, { loading: setImagesLoading }] = useMutation(SET_IMAGES, {
     onError: (error) => setBackMessage(error.message),
     onCompleted: (data) => {
       const { ok, message } = data.setImages;

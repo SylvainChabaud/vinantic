@@ -5,12 +5,7 @@ module.exports = {
     fontFamily: {
       'tangerine': ['tangerine']
     },
-    extend: {
-      spacing: {
-        '15vw': '15vw',
-        '3vw': '3vw'
-      },
-    },
+    extend: {},
   },
   plugins: [],
 }

@@ -8,7 +8,7 @@ const Header = () => (
       <Title />
     </div>
 
-    <div className="pb-14 px-15vw border-b-2">
+    <div className="pb-14 px-[15vw] border-b-2">
       <Description />
     </div>
   </div>
