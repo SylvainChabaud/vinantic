@@ -104,7 +104,6 @@ const AdminPage = () => {
               wineType: propOr("", "Type"),
               city: propOr("", "Ville"),
               quantity: propOr(0, "Quantity"),
-              imageData: () => ''
             })
           ),
           transformBottles
@@ -204,11 +203,7 @@ const AdminPage = () => {
                 <td className="border px-4 py-2">{prop("bottleRef", bottle)}</td>
                 <td className="border px-4 py-2">{prop("quantity", bottle)}</td>
                 <td className="border px-4 py-2">
-                  <img
-                    className="w-24"
-                    src={imageSrc}
-                    alt={prop("name", bottle)}
-                  />
+                  <img className="w-24" src={imageSrc} alt={prop("name", bottle)} />
                 </td>
               </tr>
             );
