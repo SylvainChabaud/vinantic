@@ -12,19 +12,19 @@ const bottleResolvers = {
 
         return {
           ok: true,
-          message: "Toutes les infos ont été récupérées à partir de la base de données.",
+          message: "All botles details have been retrieved from the database",
           data: results,
         };
       } catch (err) {
-        console.error("Error fetching bottles:", err);
+        console.error("Error getting bottles:", err);
         return {
           ok: false,
-          message: "Erreur lors de la récupération des bouteilles.",
+          message: "Error getting bottles",
         };
       } finally {
         if (connection) {
           connection.end();
-          console.log("🚀 MySQL disconnected");
+          console.log("🚀 MySQL disconnected from getBottles query");
         }
       }
     },
@@ -38,7 +38,7 @@ const bottleResolvers = {
         for (let i = 0; i < bottles.length; i++) {
           const bottle = bottles[i];
           const query =
-            "INSERT INTO bottles (name, price, year, quality, bottleRef, bottleType, city, quantity, wineType) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "INSERT INTO bottles (name, price, year, quality, bottleRef, bottleType, city, quantity, wineType, imageData) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
           const values = [
             bottle.name,
             bottle.price,
@@ -49,24 +49,25 @@ const bottleResolvers = {
             bottle.city,
             bottle.quantity,
             bottle.wineType,
+            bottle.imageData
           ];
           await queryAsync(connection)(query, values);
         }
 
         return {
           ok: true,
-          message: "Toutes les bouteilles ont été ajoutées avec succès.",
+          message: "All bottles details have been successfully added",
         };
       } catch (err) {
-        console.error("Error adding bottle:", err);
+        console.error("Error adding bottles:", err);
         return {
           ok: false,
-          message: "Erreur lors de l'ajout des bouteilles.",
+          message: "Error adding bottles",
         };
       } finally {
         if (connection) {
           connection.end();
-          console.log("🚀 MySQL disconnected");
+          console.log("🚀 MySQL disconnected from setBottles mutation");
         }
       }
     },
@@ -79,18 +80,18 @@ const bottleResolvers = {
 
         return {
           ok: true,
-          message: "Toutes les bouteilles ont été supprimées avec succès.",
+          message: "All bottles details have been successfully deleted.",
         };
       } catch (err) {
-        console.error("Error deleting bottles:", err);
+        console.error("Error deleting bottles details:", err);
         return {
           ok: false,
-          message: "Erreur lors de la suppression des bouteilles.",
+          message: "Error deleting bottles details",
         };
       } finally {
         if (connection) {
           connection.end();
-          console.log("🚀 MySQL disconnected");
+          console.log("🚀 MySQL disconnected from deleteBottles mutations");
         }
       }
     },

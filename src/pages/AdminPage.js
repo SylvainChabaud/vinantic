@@ -104,6 +104,7 @@ const AdminPage = () => {
               wineType: propOr("", "Type"),
               city: propOr("", "Ville"),
               quantity: propOr(0, "Quantity"),
+              imageData: () => ''
             })
           ),
           transformBottles

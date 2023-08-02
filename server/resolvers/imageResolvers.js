@@ -4,8 +4,8 @@ const path = require("path");
 const queryAsync = require("./utils");
 const { connectToDb } = require("../connectToDb");
 
-const IMAGES_ROOT_PATH = "../../src/assets/images/";
-const FOLDER_PATH = path.resolve(__dirname, "../../src/assets/images");
+const IMAGES_ROOT_PATH = "../assets";
+const FOLDER_PATH = path.resolve(__dirname, "../assets/images");
 
 const imageResolvers = {
   Query: {
@@ -25,15 +25,19 @@ const imageResolvers = {
 
         return {
           ok: true,
-          message: "Toutes les images ont été récupérées à partir de la base de donnée",
+          message: "All images have been retrieved from the database",
           data: newImages,
         };
       } catch (err) {
-        throw new Error(err);
+        console.error("Error getting images:", err);
+        return {
+          ok: false,
+          message: `Error getting images: ${err}`,
+        };
       } finally {
         if (connection) {
           connection.end();
-          console.log("🚀 MySQL disconnected");
+          console.log("🚀 MySQL disconnected from getImages query");
         }
       }
     },
@@ -50,14 +54,18 @@ const imageResolvers = {
 
         return {
           ok: true,
-          message: "Toutes les images ont été ajoutées avec succès.",
+          message: "All images have been successfully added.",
         };
       } catch (err) {
-        throw new Error(err);
+        console.error("Error setting images:", err);
+        return {
+          ok: false,
+          message: `Error setting images: ${err}`,
+        };
       } finally {
         if (connection) {
           connection.end();
-          console.log("🚀 MySQL disconnected");
+          console.log("🚀 MySQL disconnected from setImages mutation");
         }
       }
     },
@@ -70,14 +78,18 @@ const imageResolvers = {
 
         return {
           ok: true,
-          message: "Toutes les images ont été supprimées avec succès.",
+          message: "All images have been successfully deleted.",
         };
       } catch (err) {
-        throw new Error(err);
+        console.error("Error deleting images:", err);
+        return {
+          ok: false,
+          message: `Error deleting images: ${err}`,
+        };
       } finally {
         if (connection) {
           connection.end();
-          console.log("🚀 MySQL disconnected");
+          console.log("🚀 MySQL disconnected from deleteImages mutation");
         }
       }
     },
