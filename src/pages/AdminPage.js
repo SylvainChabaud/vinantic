@@ -6,6 +6,7 @@ import { applySpec, compose, map, prop, propOr } from "ramda";
 import { mapIndexed } from "ramda-adjunct";
 import { getImageSource, transformBottles } from "./helper";
 import { DELETE_IMAGES, GET_IMAGES, SET_IMAGES } from "../graphql/imageQueries";
+import { SET_GLOBAL } from "../graphql/globalQueries";
 
 const AdminPage = () => {
   const [backMessage, setBackMessage] = useState();
@@ -47,6 +48,16 @@ const AdminPage = () => {
     onError: (error) => setBackMessage(error.message),
     onCompleted: (data) => {
       const { ok, message } = data.setImages;
+      if (ok) setBackMessage(message);
+      else setBackMessage("Une erreur est survenue");
+    },
+  });
+
+  const [setGlobal, { loading: setGlobalLoading }] = useMutation(SET_GLOBAL, {
+    onError: (error) => setBackMessage(error.message),
+    onCompleted: (data) => {
+      console.info('GLOBAL', data);
+      const { ok, message } = data.setGlobal;
       if (ok) setBackMessage(message);
       else setBackMessage("Une erreur est survenue");
     },
@@ -122,7 +133,7 @@ const AdminPage = () => {
 
   return (
     <div className="flex flex-col items-center">
-      {setImagesLoading || setBottlesLoading || deleteImagesLoading || deleteBottlesLoading || getImagesLoading || getBottlesLoading ? (
+      {setGlobalLoading || setImagesLoading || setBottlesLoading || deleteImagesLoading || deleteBottlesLoading || getImagesLoading || getBottlesLoading ? (
         <p>En cours de chargement...</p>
       ) : (
         backMessage && <p className="my-20 text-xl text-green-900">{backMessage}</p>
@@ -170,6 +181,13 @@ const AdminPage = () => {
         onClick={getBottles}
       >
         GET INFOS WINES FROM BASE
+      </button>
+
+      <button
+        className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10"
+        onClick={setGlobal}
+      >
+        SET INFOS AND PICS WINES TO BASE
       </button>
 
       <table className="table-auto w-full text-left mt-10">
