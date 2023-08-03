@@ -6,12 +6,15 @@ import { applySpec, compose, map, prop, propOr } from "ramda";
 import { mapIndexed } from "ramda-adjunct";
 import { getImageSource, transformBottles } from "./helper";
 import { DELETE_IMAGES, GET_IMAGES, SET_IMAGES } from "../graphql/imageQueries";
-import { SET_GLOBAL } from "../graphql/globalQueries";
+import { GET_GLOBAL, SET_GLOBAL } from "../graphql/globalQueries";
+import { Buffer } from "buffer";
+
 
 const AdminPage = () => {
   const [backMessage, setBackMessage] = useState();
   const [bottlesList, setBottlesList] = useState([]);
   const [imagesList, setImagesList] = useState([]);
+  const [globalList, setGlobalList] = useState([]);
 
   const [deleteBottles, { loading: deleteBottlesLoading }] = useMutation(DELETE_BOTTLES, {
     onError: (error) => setBackMessage(error.message),
@@ -56,7 +59,6 @@ const AdminPage = () => {
   const [setGlobal, { loading: setGlobalLoading }] = useMutation(SET_GLOBAL, {
     onError: (error) => setBackMessage(error.message),
     onCompleted: (data) => {
-      console.info('GLOBAL', data);
       const { ok, message } = data.setGlobal;
       if (ok) setBackMessage(message);
       else setBackMessage("Une erreur est survenue");
@@ -80,6 +82,18 @@ const AdminPage = () => {
       const { ok, message, data: bottles } = data.getBottles;
       if (ok) {
         setBottlesList(bottles);
+        setBackMessage(message);
+      } else setBackMessage("Une erreur est survenue");
+    },
+  });
+
+  const [getGlobal, { loading: getGlobalLoading }] = useLazyQuery(GET_GLOBAL, {
+    onError: (error) => setBackMessage(error.message),
+    onCompleted: (data) => {
+      console.info("GLOBAL", data);
+      const { ok, message, data: global } = data.getGlobal;
+      if (ok) {
+        setGlobalList(global);
         setBackMessage(message);
       } else setBackMessage("Une erreur est survenue");
     },
@@ -133,11 +147,18 @@ const AdminPage = () => {
 
   return (
     <div className="flex flex-col items-center">
-      {setGlobalLoading || setImagesLoading || setBottlesLoading || deleteImagesLoading || deleteBottlesLoading || getImagesLoading || getBottlesLoading ? (
-        <p>En cours de chargement...</p>
-      ) : (
-        backMessage && <p className="my-20 text-xl text-green-900">{backMessage}</p>
-      )}
+      {getGlobalLoading ||
+      setGlobalLoading ||
+      setImagesLoading ||
+      setBottlesLoading ||
+      deleteImagesLoading ||
+      deleteBottlesLoading ||
+      getImagesLoading ||
+      getBottlesLoading ? (
+          <p>En cours de chargement...</p>
+        ) : (
+          backMessage && <p className="my-20 text-xl text-green-900">{backMessage}</p>
+        )}
 
       <button
         className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10"
@@ -187,7 +208,14 @@ const AdminPage = () => {
         className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10"
         onClick={setGlobal}
       >
-        SET INFOS AND PICS WINES TO BASE
+        SET GLOBAL TO BASE
+      </button>
+
+      <button
+        className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10"
+        onClick={getGlobal}
+      >
+        GET GLOBAL FROM BASE
       </button>
 
       <table className="table-auto w-full text-left mt-10">
@@ -207,8 +235,8 @@ const AdminPage = () => {
         </thead>
         <tbody>
           {mapIndexed((bottle, idx) => {
-            const imageSrc = getImageSource({ bottle, imagesList });
-
+            const imageSource = `data:image/jpg;base64,${Buffer.from(prop("imageData", bottle), "base64").toString("base64")}`;
+            console.info();
             return (
               <tr key={`bottle-${idx}`} className="hover:bg-gray-100">
                 <td className="border px-4 py-2">{prop("name", bottle)}</td>
@@ -221,11 +249,11 @@ const AdminPage = () => {
                 <td className="border px-4 py-2">{prop("bottleRef", bottle)}</td>
                 <td className="border px-4 py-2">{prop("quantity", bottle)}</td>
                 <td className="border px-4 py-2">
-                  <img className="w-24" src={imageSrc} alt={prop("name", bottle)} />
+                  <img className="w-24" src={imageSource} alt={prop("name", bottle)} />
                 </td>
               </tr>
             );
-          })(bottlesList)}
+          })(globalList)}
         </tbody>
       </table>
     </div>
