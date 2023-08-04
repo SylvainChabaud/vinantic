@@ -37,15 +37,15 @@ const BottleInfosPage = () => {
           <Loader size={100} />
         </div>
       ) : (
-        <div className="flex items-center justify-evenly bg-stone-200 min-h-screen p-10 flex-col lg:flex-row">
+        <div className="min-h-screen flex flex-col items-center justify-center bg-stone-200 lg:flex-row lg:justify-evenly">
           <img
             src={`data:image/jpg;base64,${Buffer.from(wineBottle.imageData, "base64").toString("base64")}`}
             alt={`${wineBottle.name}-${wineBottle.year}-${wineBottle.bottleRef}`}
             className="cursor-pointer rounded-3xl h-[500px] xl:h-[700px]"
           />
 
-          <div className="flex flex-col justify-left lg:mt-0 lg:items-start sm:mt-10 sm:items-center">
-            <p className="text-5xl font-semibold">
+          <div className="flex flex-col mt-10 items-center lg:mt-0 lg:items-start">
+            <p className="text-5xl font-semibold text-center">
               {t("bottle.castle")} {wineBottle.name}
             </p>
 
