@@ -26,6 +26,7 @@ export const vinantic_french_traduction = {
     quality: "Qualité : "
   },
   general: {
-    loading: "En cours de chargement..."
+    loadingMessage: "En cours de chargement...",
+    errorMessage: "Une erreur est survenue"
   }
 };

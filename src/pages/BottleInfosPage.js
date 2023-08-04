@@ -1,62 +1,77 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { RatingStars } from "../components/ratingStars/RatingStars";
 import { MIN_SIZE_QUALITY_STARS } from "../constants";
 import { useTranslation } from "react-i18next";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useQuery } from "@apollo/client";
+import { GET_WINE_BOTTLE } from "../graphql/globalQueries";
+import { Buffer } from "buffer";
+import { Loader } from "../components/Loader";
+import { isEmpty, isNotNil } from "ramda";
 
 const BottleInfosPage = () => {
   const { t } = useTranslation();
   const { id } = useParams();
+  const [wineBottle, setWineBottle] = useState({});
 
-  const wineInfos = JSON.parse(localStorage.getItem(`wineBottleInfos-${id}`));
-  const { city, name, year, price, quantity, contentType, data, bottleRef, bottleType, quality } = wineInfos;
-
-  const onCloseTab = (event) => {
-    event.preventDefault();
-    localStorage.removeItem(`wineBottleInfos-${id}`);
-  };
+  const {
+    loading: wineBottleLoading,
+    error: wineBottleError,
+    data: wineBottleData,
+  } = useQuery(GET_WINE_BOTTLE, {
+    variables: { id },
+  });
 
   useEffect(() => {
-    window.addEventListener("unload", onCloseTab);
-    return () => window.removeEventListener("unload", onCloseTab);
-  }, []);
+    if (!wineBottleLoading && wineBottleData) {
+      setWineBottle(wineBottleData.getWineBottle.data);
+    }
+  }, [wineBottleData, wineBottleLoading]);
 
   return (
-    <div className="flex items-center justify-evenly bg-stone-200 min-h-screen p-10 flex-col lg:flex-row">
-      <Link to={`/wine-bottle-pic/${id}`} target="_blank" onClick={() => localStorage.setItem(`wineBottlePic-${id}`, JSON.stringify(wineInfos))}>
-        <img
-          src={`data:${contentType};base64,${data}`}
-          alt={`${name}-${year}-${bottleRef}`}
-          className="cursor-pointer rounded-3xl h-[500px] xl:h-[700px]"
-        />
-      </Link>
-
-      <div className="flex flex-col justify-left lg:mt-0 lg:items-start sm:mt-10 sm:items-center">
-        <p className="text-5xl font-semibold">
-          {t("bottle.castle")} {name}
-        </p>
-
-        <div className="flex">
-          <p className="text-3xl text-gray-600">{city}</p>
-          <p className="text-3xl text-gray-600 ml-3">{year}</p>
+    <>
+      {isNotNil(wineBottleError) ? (
+        <p className="my-20 text-xl text-green-900 text-center">{t("general.errorMessage")}</p>
+      ) : isEmpty(wineBottle) ? (
+        <div className="flex justify-center">
+          <Loader size={100} />
         </div>
+      ) : (
+        <div className="flex items-center justify-evenly bg-stone-200 min-h-screen p-10 flex-col lg:flex-row">
+          <img
+            src={`data:image/jpg;base64,${Buffer.from(wineBottle.imageData, "base64").toString("base64")}`}
+            alt={`${wineBottle.name}-${wineBottle.year}-${wineBottle.bottleRef}`}
+            className="cursor-pointer rounded-3xl h-[500px] xl:h-[700px]"
+          />
 
-        <p className="text-xl text-gray-600">{bottleType}</p>
+          <div className="flex flex-col justify-left lg:mt-0 lg:items-start sm:mt-10 sm:items-center">
+            <p className="text-5xl font-semibold">
+              {t("bottle.castle")} {wineBottle.name}
+            </p>
 
-        <p className="text-2xl font-semibold mt-10">
-          {t("bottle.price")} {price} {t("bottle.unit")}
-        </p>
+            <div className="flex">
+              <p className="text-3xl text-gray-600">{wineBottle.city}</p>
+              <p className="text-3xl text-gray-600 ml-3">{wineBottle.year}</p>
+            </div>
 
-        <p className="text-xl text-gray-600">
-          {t("bottle.stock")} {quantity}
-        </p>
+            <p className="text-xl text-gray-600">{wineBottle.bottleType}</p>
 
-        <div className="flex items-center">
-          <p className="text-xl text-gray-600 mr-3">{t("bottle.quality")}</p>
-          <RatingStars ratingString={quality} size={MIN_SIZE_QUALITY_STARS} />
+            <p className="text-2xl font-semibold mt-10">
+              {t("bottle.price")} {wineBottle.price} {t("bottle.unit")}
+            </p>
+
+            <p className="text-xl text-gray-600">
+              {t("bottle.stock")} {wineBottle.quantity}
+            </p>
+
+            <div className="flex items-center">
+              <p className="text-xl text-gray-600 mr-3">{t("bottle.quality")}</p>
+              <RatingStars ratingString={wineBottle.quality} size={MIN_SIZE_QUALITY_STARS} />
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

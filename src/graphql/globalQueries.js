@@ -39,3 +39,25 @@ export const DELETE_GLOBAL = gql`
     }
   }
 `;
+
+export const GET_WINE_BOTTLE = gql`
+  query getWineBottle($id: ID!) {
+    getWineBottle(id: $id) {
+      ok
+      message
+      data {
+        id
+        name
+        price
+        year
+        quality
+        bottleRef
+        bottleType
+        city
+        quantity
+        wineType
+        imageData
+      }
+    }
+  }
+`;

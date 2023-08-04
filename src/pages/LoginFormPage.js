@@ -21,7 +21,6 @@ const LoginFormPage = ({ onHandle }) => {
   };
 
   const handleSubmit = (event) => {
-    console.info('handleSubmit', formData)
     event.preventDefault();
 
     const { username, password } = formData;
@@ -29,7 +28,6 @@ const LoginFormPage = ({ onHandle }) => {
   };
 
   useEffect(() => {
-    console.info('getUser', { userData, userError })
     if (userData && !userError) {
       const { ok, message } = userData.getUser;
       if (ok) {

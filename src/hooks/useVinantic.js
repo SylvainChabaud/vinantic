@@ -46,7 +46,6 @@ const useVinantic = () => {
 
   useEffect(() => {
     if (globalData && !globalLoading) {
-      console.info('GLOBAL', globalData);
       const globalWithPic = (globalData.getGlobal.data).map(el => ({
         ...el,
         imageSource: `data:image/jpg;base64,${Buffer.from(prop("imageData", el), "base64").toString("base64")}`
