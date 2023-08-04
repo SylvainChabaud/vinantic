@@ -24,5 +24,8 @@ export const vinantic_french_traduction = {
     price: "Prix unitaire :",
     unit: "€",
     quality: "Qualité : "
+  },
+  general: {
+    loading: "En cours de chargement..."
   }
 };

@@ -30,3 +30,12 @@ export const SET_GLOBAL = gql`
     }
   }
 `;
+
+export const DELETE_GLOBAL = gql`
+  mutation deleteGlobal {
+    deleteGlobal {
+      ok
+      message
+    }
+  }
+`;

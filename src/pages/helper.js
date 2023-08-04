@@ -1,5 +1,5 @@
-import { equals, find, head, last, prop, propOr, split, toLower } from "ramda";
-import { Buffer } from "buffer";
+// import { equals, find, head, last, prop, propOr, split, toLower } from "ramda";
+// import { Buffer } from "buffer";
 
 export const transformBottles = (winesList) => {
   const filteredWinesList = [];
@@ -24,14 +24,14 @@ export const transformBottles = (winesList) => {
   return filteredWinesList;
 };
 
-export const getImageSource = ({ bottle, imagesList }) => {
-  const imageRef = toLower(prop("bottleRef", bottle));
-  const foundedImage = find((image) => {
-    const imagePath = propOr("", "filename", image);
-    const splittedName = head(split(".", last(split("\\", imagePath))));
-    if (equals(splittedName, imageRef)) return image;
-  })(imagesList);
+// export const getImageSource = ({ bottle, imagesList }) => {
+//   const imageRef = toLower(prop("bottleRef", bottle));
+//   const foundedImage = find((image) => {
+//     const imagePath = propOr("", "filename", image);
+//     const splittedName = head(split(".", last(split("\\", imagePath))));
+//     if (equals(splittedName, imageRef)) return image;
+//   })(imagesList);
 
-  return foundedImage && `data:${foundedImage.contentType};base64,${Buffer.from(foundedImage.data, "base64").toString("base64")}`;
-};
+//   return foundedImage && `data:${foundedImage.contentType};base64,${Buffer.from(foundedImage.data, "base64").toString("base64")}`;
+// };
 
