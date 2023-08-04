@@ -5,20 +5,20 @@ import { Link } from "react-router-dom";
 import { MIN_SIZE_QUALITY_STARS } from "../constants";
 
 const WineCard = ({ wineInfos }) => {
-  const { data, name, contentType, year, bottleRef, id, price, quantity } = wineInfos;
+  const { imageSource, name, contentType, year, bottleRef, id, price, quantity } = wineInfos;
 
   return (
     <div className="rounded-3xl shadow-md h-full">
       <div className="bg-stone-100 flex flex-col border rounded-3xl h-full justify-between">
         <div className="flex flex-col items-center m-10">
-          {data && (
+          {imageSource && (
             <Link
               to={`/wine-bottle-informations/${id}`}
               target="_blank"
               onClick={() => localStorage.setItem(`wineBottleInfos-${id}`, JSON.stringify(wineInfos))}
             >
               <img
-                src={`data:${contentType};base64,${data}`}
+                src={imageSource}
                 alt={`${name}-${year}-${bottleRef}`}
                 className="cursor-pointer border-2 border-stone-300 rounded-3xl transition duration-1000 ease-in-out transform hover:scale-125"
               />
