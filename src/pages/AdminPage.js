@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useLazyQuery, useMutation } from "@apollo/client";
 // import XLSX from "xlsx/dist/xlsx.full.min";
-import { Buffer } from "buffer";
-import { applySpec, compose, map, prop, propOr } from "ramda";
+import { prop } from "ramda";
 import { isNotEmpty, mapIndexed } from "ramda-adjunct";
-import { transformBottles } from "./helper";
-import { DELETE_IMAGES, GET_IMAGES, SET_IMAGES } from "../graphql/imageQueries";
+import { getFormattedImage } from "./helper";
+// import { DELETE_IMAGES, GET_IMAGES, SET_IMAGES } from "../graphql/imageQueries";
 import { DELETE_GLOBAL, GET_GLOBAL, GET_WINE_BOTTLE, SET_GLOBAL } from "../graphql/globalQueries";
-import { DELETE_BOTTLES, GET_BOTTLES, SET_BOTTLES } from "../graphql/bottleQueries";
+// import { DELETE_BOTTLES, GET_BOTTLES, SET_BOTTLES } from "../graphql/bottleQueries";
 import { useTranslation } from "react-i18next";
 
 const AdminPage = () => {
@@ -128,45 +127,6 @@ const AdminPage = () => {
       }, 3000);
   }, [backMessage]);
 
-  // const handleXlsFileUpload = (event) => {
-  //   if (event) {
-  //     const file = event.target.files[0];
-  //     const reader = new FileReader();
-  //     reader.onload = (event) => {
-  //       const bstr = event.target.result;
-  //       const workbook = XLSX.read(bstr, { type: "binary" });
-  //       const firstSheetName = workbook.SheetNames[0];
-  //       const worksheet = workbook.Sheets[firstSheetName];
-  //       const jsonData = XLSX.utils.sheet_to_json(worksheet);
-
-  //       const filteredWines = compose(
-  //         map(
-  //           applySpec({
-  //             year: propOr(0, "Année"),
-  //             name: propOr("", "Château"),
-  //             bottleType: propOr("", "Contenant"),
-  //             price: propOr(0, "Prix sur le marché"),
-  //             quality: propOr("", "Qualité"),
-  //             bottleRef: (wine) => propOr("", "Référence", wine).toLowerCase(),
-  //             wineType: propOr("", "Type"),
-  //             city: propOr("", "Ville"),
-  //             quantity: propOr(0, "Quantity"),
-  //           })
-  //         ),
-  //         transformBottles
-  //       )(jsonData);
-
-  //       setBottles({ variables: { bottles: filteredWines } }); // Set to Base
-  //     };
-
-  //     reader.onerror = (error) => {
-  //       setBackMessage(error);
-  //     };
-
-  //     reader.readAsBinaryString(file);
-  //   }
-  // };
-
   return (
     <div className="flex flex-col items-center">
       {getGlobalLoading ||
@@ -185,18 +145,18 @@ const AdminPage = () => {
         ) : (
           <div className="flex flex-col">
             {/* <button
-              className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10"
-              onClick={deleteBottles}
-            >
-              DELETE INFOS WINES FROM BASE
-            </button>
+                className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10"
+                onClick={deleteBottles}
+              >
+                DELETE INFOS WINES FROM BASE
+              </button>
 
-            <button
-              className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10"
-              onClick={deleteImages}
-            >
-              DELETE PICS WINES FROM BASE
-            </button> */}
+              <button
+                className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10"
+                onClick={deleteImages}
+              >
+                DELETE PICS WINES FROM BASE
+              </button> */}
 
             <button
               className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10"
@@ -206,34 +166,34 @@ const AdminPage = () => {
             </button>
 
             {/* <label
-              className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 cursor-pointer mt-10 text-center"
-              onChange={handleXlsFileUpload}
-              htmlFor="uploadXlsFileInput"
-            >
-              <input id="uploadXlsFileInput" className="hidden" type="file" />
-              GET INFOS WINES FROM XLS FILE AND SET TO BASE
-            </label>
+                className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 cursor-pointer mt-10 text-center"
+                onChange={handleXlsFileUpload}
+                htmlFor="uploadXlsFileInput"
+              >
+                <input id="uploadXlsFileInput" className="hidden" type="file" />
+                GET INFOS WINES FROM XLS FILE AND SET TO BASE
+              </label>
 
-            <button
-              className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10"
-              onClick={setImages}
-            >
-              GET PICS WINES FROM FOLDER AND SET TO BASE
-            </button>
+              <button
+                className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10"
+                onClick={setImages}
+              >
+                GET PICS WINES FROM FOLDER AND SET TO BASE
+              </button>
 
-            <button
-              className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10"
-              onClick={getImages}
-            >
-              GET PICS WINES FROM BASE
-            </button>
+              <button
+                className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10"
+                onClick={getImages}
+              >
+                GET PICS WINES FROM BASE
+              </button>
 
-            <button
-              className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10"
-              onClick={getBottles}
-            >
-              GET INFOS WINES FROM BASE
-            </button> */}
+              <button
+                className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10"
+                onClick={getBottles}
+              >
+                GET INFOS WINES FROM BASE
+              </button> */}
 
             <button
               className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10"
@@ -273,25 +233,22 @@ const AdminPage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {mapIndexed((bottle, idx) => {
-                    const imageSource = `data:image/jpg;base64,${Buffer.from(prop("imageData", bottle), "base64").toString("base64")}`;
-                    return (
-                      <tr key={`bottle-${idx}`} className="hover:bg-gray-100">
-                        <td className="border px-4 py-2">{prop("name", bottle)}</td>
-                        <td className="border px-4 py-2">{prop("city", bottle)}</td>
-                        <td className="border px-4 py-2">{prop("price", bottle)}</td>
-                        <td className="border px-4 py-2">{prop("year", bottle)}</td>
-                        <td className="border px-4 py-2">{prop("quality", bottle)}</td>
-                        <td className="border px-4 py-2">{prop("bottleType", bottle)}</td>
-                        <td className="border px-4 py-2">{prop("wineType", bottle)}</td>
-                        <td className="border px-4 py-2">{prop("bottleRef", bottle)}</td>
-                        <td className="border px-4 py-2">{prop("quantity", bottle)}</td>
-                        <td className="border px-4 py-2">
-                          <img className="w-24" src={imageSource} alt={prop("name", bottle)} />
-                        </td>
-                      </tr>
-                    );
-                  })(globalList)}
+                  {mapIndexed((bottle, idx) => (
+                    <tr key={`bottle-${idx}`} className="hover:bg-gray-100">
+                      <td className="border px-4 py-2">{prop("name", bottle)}</td>
+                      <td className="border px-4 py-2">{prop("city", bottle)}</td>
+                      <td className="border px-4 py-2">{prop("price", bottle)}</td>
+                      <td className="border px-4 py-2">{prop("year", bottle)}</td>
+                      <td className="border px-4 py-2">{prop("quality", bottle)}</td>
+                      <td className="border px-4 py-2">{prop("bottleType", bottle)}</td>
+                      <td className="border px-4 py-2">{prop("wineType", bottle)}</td>
+                      <td className="border px-4 py-2">{prop("bottleRef", bottle)}</td>
+                      <td className="border px-4 py-2">{prop("quantity", bottle)}</td>
+                      <td className="border px-4 py-2">
+                        <img className="w-24" src={getFormattedImage(bottle.imageData)} alt={prop("name", bottle)} />
+                      </td>
+                    </tr>
+                  ))(globalList)}
                 </tbody>
               </table>
             )}

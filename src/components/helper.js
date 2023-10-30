@@ -1,13 +1,8 @@
 import { jsPDF } from "jspdf";
 import { prop, head, last } from "ramda";
+import { getFormattedImage } from "../pages/helper";
 
 export const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
-
-export const extractImageName = (filename) => {
-  const nameWithExtension = filename.split("\\").pop(); // Récupère le nom de fichier avec l'extension
-  const nameWithoutExtension = nameWithExtension.split(".").slice(0, -1).join("."); // Supprime l'extension du nom de fichier
-  return nameWithoutExtension;
-};
 
 export const mergeWineInfosByRef = ({ winesData, imagesData }) =>
   winesData.map((wine) => {
@@ -39,8 +34,6 @@ export const filterAndSortWineList = ({ wineList, setFilteredWinesList, searchTe
       wine.wineType.toLowerCase().includes(lowerCaseSearchText) ||
       wine.year.toString().includes(lowerCaseSearchText)
   );
-
-  console.info("filteredList", { filteredList, wineList });
 
   // Trier les bouteilles de vin en fonction de l'option de tri sélectionnée
   if (sortBy === "year") {
@@ -168,7 +161,7 @@ export const exportVinanticPdf = ({ winesList, setIsPdfLoading }) => {
         cardImage.style.display = "block";
         cardImage.style.height = "200px";
         cardImage.style.borderRadius = "10px";
-        cardImage.src = `data:${millesime.contentType};base64,${millesime.data}`;
+        cardImage.src = getFormattedImage(millesime.imageData);
         cardMainDiv.appendChild(cardImage);
 
         /* ADD TO MAIN DIV */
