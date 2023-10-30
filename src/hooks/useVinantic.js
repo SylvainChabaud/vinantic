@@ -73,6 +73,7 @@ const useVinantic = () => {
   // }, [imagesList, winesList]);
 
   useEffect(() => {
+    console.info('SEARCH', searchText);
     if (isNotEmpty(globalList)) {
       filterAndSortWineList({
         wineList: globalList,

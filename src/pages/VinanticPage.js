@@ -29,35 +29,37 @@ const VinanticPage = () => {
     <>
       <Header />
 
-      {isWinesLoading ? (
-        <div className="flex justify-center">
-          <Loader size={100} />
+      <div className="flex flex-col bg-gray-100 p-[3vw] pt-10">
+        <SearchInputs searchText={searchText} sortBy={sortBy} handleSearchChange={handleSearchChange} handleSortChange={handleSortChange} />
+
+        <div className="mt-10">
+          <Banner
+            currentPage={currentPage}
+            totalWines={totalWines}
+            isPdfLoading={isPdfLoading}
+            sortBy={sortBy}
+            handleGeneratePdf={handleGeneratePdf}
+          />
         </div>
-      ) : totalWines === 0 ? (
-        <p className="mt-10 flex justify-center text-red-400">{t("warnings.no_wines_available")}</p>
-      ) : (
-        <div className="flex flex-col bg-gray-100 p-[3vw] pt-10">
-          <SearchInputs searchText={searchText} sortBy={sortBy} handleSearchChange={handleSearchChange} handleSortChange={handleSortChange} />
 
-          <div className="mt-10">
-            <Banner
-              currentPage={currentPage}
-              totalWines={totalWines}
-              isPdfLoading={isPdfLoading}
-              sortBy={sortBy}
-              handleGeneratePdf={handleGeneratePdf}
-            />
+        {isWinesLoading ? (
+          <div className="flex justify-center">
+            <Loader size={100} />
           </div>
+        ) : totalWines === 0 ? (
+          <p className="mt-10 flex justify-center text-red-400">{t("warnings.no_wines_available")}</p>
+        ) : (
+          <>
+            <div className=" mt-10">
+              <WinesList list={winesList} />
+            </div>
 
-          <div className=" mt-10">
-            <WinesList list={winesList} />
-          </div>
-
-          <div className="mt-10">
-            <Pagination currentPage={currentPage} totalWines={totalWines} onPageChange={handlePageChange} />
-          </div>
-        </div>
-      )}
+            <div className="mt-10">
+              <Pagination currentPage={currentPage} totalWines={totalWines} onPageChange={handlePageChange} />
+            </div>
+          </>
+        )}
+      </div>
     </>
   );
 };

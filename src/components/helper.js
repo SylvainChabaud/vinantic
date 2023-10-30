@@ -1,7 +1,7 @@
 import { jsPDF } from "jspdf";
 import { prop, head, last } from "ramda";
 
-export const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+export const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
 export const extractImageName = (filename) => {
   const nameWithExtension = filename.split("\\").pop(); // Récupère le nom de fichier avec l'extension
@@ -27,8 +27,20 @@ export const mergeWineInfosByRef = ({ winesData, imagesData }) =>
   });
 
 export const filterAndSortWineList = ({ wineList, setFilteredWinesList, searchText, sortBy }) => {
+  // Convertir le texte de recherche en minuscules pour une recherche insensible à la casse
+  const lowerCaseSearchText = searchText.toLowerCase();
+
   // Filtrer les bouteilles de vin en fonction du texte de recherche
-  let filteredList = wineList.filter((wine) => wine.name.toLowerCase().includes(searchText.toLowerCase()));
+  let filteredList = wineList.filter(
+    (wine) =>
+      wine.name.toLowerCase().includes(lowerCaseSearchText) ||
+      wine.city.toLowerCase().includes(lowerCaseSearchText) ||
+      wine.price.toString().includes(lowerCaseSearchText) ||
+      wine.wineType.toLowerCase().includes(lowerCaseSearchText) ||
+      wine.year.toString().includes(lowerCaseSearchText)
+  );
+
+  console.info("filteredList", { filteredList, wineList });
 
   // Trier les bouteilles de vin en fonction de l'option de tri sélectionnée
   if (sortBy === "year") {
