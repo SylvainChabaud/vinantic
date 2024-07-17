@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GET_GLOBAL = gql`
-  query getGlobal {
-    getGlobal {
+  query getGlobal($offset: Int, $limit: Int, $searchText: String, $sortBy: String) {
+    getGlobal(offset: $offset, limit: $limit, searchText: $searchText, sortBy: $sortBy) {
       ok
       message
       data {
@@ -18,6 +18,7 @@ export const GET_GLOBAL = gql`
         wineType
         imageData
       }
+      totalCount
     }
   }
 `;

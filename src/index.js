@@ -6,7 +6,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import i18n from "./trad/i18n";
 
 const client = new ApolloClient({
-  uri: "https://tatiom-apis.fr/graphql",
+  uri: "https://tatiom-apis.fr/vinantic-api/graphql",
   cache: new InMemoryCache(),
 });
 

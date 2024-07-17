@@ -21,7 +21,7 @@ export const mergeWineInfosByRef = ({ winesData, imagesData }) =>
     };
   });
 
-export const filterAndSortWineList = ({ wineList, setFilteredWinesList, searchText, sortBy }) => {
+export const filterAndSortWineList = ({ wineList, setCurrentWineList, searchText, sortBy }) => {
   // Convertir le texte de recherche en minuscules pour une recherche insensible à la casse
   const lowerCaseSearchText = searchText.toLowerCase();
 
@@ -45,7 +45,7 @@ export const filterAndSortWineList = ({ wineList, setFilteredWinesList, searchTe
   }
 
   // Mettre à jour la liste des bouteilles de vin filtrées et triées
-  setFilteredWinesList(filteredList);
+  setCurrentWineList(filteredList);
 };
 
 export const exportVinanticPdf = ({ winesList, setIsPdfLoading }) => {
