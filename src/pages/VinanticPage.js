@@ -42,7 +42,7 @@ const VinanticPage = () => {
           />
         </div>
 
-        {isWinesLoading ? (
+        {isWinesLoading && !isPdfLoading ? (
           <div className="flex justify-center">
             <Loader size={100} />
           </div>
@@ -55,7 +55,7 @@ const VinanticPage = () => {
             </div>
 
             <div className="mt-10">
-              <Pagination currentPage={currentPage} totalWines={totalWines} onPageChange={handlePageChange} />
+              <Pagination currentPage={currentPage} totalWines={winesList.length} onPageChange={handlePageChange} />
             </div>
           </>
         )}

@@ -2,8 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { ITEMS_PER_PAGE, SEARCH_SELECTOR_OPTIONS } from "../constants";
 
-import { exportVinanticPdf, filterAndSortWineList, scrollToTop } from "../components/helper";
-import { isNotEmpty } from "ramda-adjunct";
+import { exportVinanticPdf, scrollToTop } from "../components/helper";
 import { GET_GLOBAL } from "../graphql/globalQueries";
 
 const useVinantic = () => {
@@ -20,20 +19,33 @@ const useVinantic = () => {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   const limit = offset + ITEMS_PER_PAGE;
 
-  const { loading: globalLoading, error: globalError, data: globalData } = useQuery(GET_GLOBAL, {
-    variables: { offset, limit, searchText: debouncedSearchText, sortBy }
+  const { loading: globalLoading, error: globalError, data: globalData, refetch } = useQuery(GET_GLOBAL, {
+    variables: { offset, limit, searchText: debouncedSearchText, sortBy },
+    notifyOnNetworkStatusChange: true,
   });
+
+  const fetchWinesAndExportPdf = async ({ offset, limit, searchText, sortBy }) => {
+    setIsPdfLoading(true);
+    const { data } = await refetch({ offset, limit, searchText, sortBy });
+
+    if (data) {
+      const winesList = data.getGlobal?.data;
+      winesList && exportVinanticPdf({ winesList, setIsPdfLoading })
+    }
+  };
 
   useEffect(() => {
     if (globalData && !globalLoading) {
       const { data, totalCount } = globalData.getGlobal;
 
-      setTotalWines(totalCount);
-      setCurrentWineList(data);
+      if (data.length !== totalCount) {
+        setTotalWines(totalCount);
+        setCurrentWineList(data);
+      }
     }
   }, [globalData, globalLoading])
 
-  const handleSearchChange = ({ target: { value }}) => {
+  const handleSearchChange = ({ target: { value } }) => {
     setSearchText(value);
 
     if (searchDebounce.current) {
@@ -46,13 +58,18 @@ const useVinantic = () => {
     }, 1000);
   };
 
-  const handleSortChange = ({ target: { value }}) => {
+  const handleSortChange = ({ target: { value } }) => {
     setSortBy(value);
   };
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     scrollToTop();
+  };
+
+  const handleGeneratePdf = () => {
+    console.info('totalWines', totalWines);
+    fetchWinesAndExportPdf({ offset: 0, limit: totalWines, searchText: '', sortBy: SEARCH_SELECTOR_OPTIONS.NO_SORT });
   };
 
   return {
@@ -67,7 +84,7 @@ const useVinantic = () => {
     handleSearchChange,
     handleSortChange,
     handlePageChange,
-    handleGeneratePdf: () => exportVinanticPdf({ winesList: currentWineList, setIsPdfLoading }),
+    handleGeneratePdf,
   };
 };
 

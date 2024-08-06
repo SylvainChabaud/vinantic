@@ -23,7 +23,8 @@ export const vinantic_french_traduction = {
     stock: "En stock :",
     price: "Prix unitaire :",
     unit: "€",
-    quality: "Qualité : "
+    quality: "Qualité : ",
+    description: "Description :",
   },
   general: {
     loadingMessage: "En cours de chargement...",

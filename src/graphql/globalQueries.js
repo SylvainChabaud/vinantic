@@ -17,6 +17,7 @@ export const GET_GLOBAL = gql`
         quantity
         wineType
         imageData
+        description
       }
       totalCount
     }
@@ -58,6 +59,7 @@ export const GET_WINE_BOTTLE = gql`
         quantity
         wineType
         imageData
+        description
       }
     }
   }

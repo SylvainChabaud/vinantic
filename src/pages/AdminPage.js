@@ -102,6 +102,7 @@ const AdminPage = () => {
     onError: (error) => setBackMessage(error.message),
     onCompleted: (data) => {
       const { ok, message, data: global } = data.getGlobal;
+      console.info('data', data)
       if (ok) {
         setGlobalList(global);
         setBackMessage(message);
@@ -229,6 +230,7 @@ const AdminPage = () => {
                     <th className="px-4 py-2">Type de vin</th>
                     <th className="px-4 py-2">Ref image</th>
                     <th className="px-4 py-2">Quantité</th>
+                    <th className="px-4 py-2">Description</th>
                     <th className="px-4 py-2">Image</th>
                   </tr>
                 </thead>
@@ -244,6 +246,7 @@ const AdminPage = () => {
                       <td className="border px-4 py-2">{prop("wineType", bottle)}</td>
                       <td className="border px-4 py-2">{prop("bottleRef", bottle)}</td>
                       <td className="border px-4 py-2">{prop("quantity", bottle)}</td>
+                      <td className="border px-4 py-2">{prop("description", bottle)}</td>
                       <td className="border px-4 py-2">
                         <img className="w-24" src={getFormattedImage(bottle.imageData)} alt={prop("name", bottle)} />
                       </td>

@@ -23,8 +23,10 @@ const BottleInfosPage = () => {
   });
 
   useEffect(() => {
-    if (!wineBottleLoading && wineBottleData) {
-      setWineBottle(wineBottleData.getWineBottle.data);
+    const wineInfos = wineBottleData?.getWineBottle?.data;
+    if (!wineBottleLoading && wineInfos) {
+      setWineBottle(wineInfos);
+      console.info('useEffect', wineInfos)
     }
   }, [wineBottleData, wineBottleLoading]);
 
@@ -41,10 +43,10 @@ const BottleInfosPage = () => {
           <img
             src={getFormattedImage(wineBottle.imageData)}
             alt={`${wineBottle.name}-${wineBottle.year}-${wineBottle.bottleRef}`}
-            className="cursor-pointer rounded-3xl h-[400px] sm:h-[500px] sm:mt-10 xl:h-[700px]"
+            className="cursor-pointer rounded-3xl h-[400px] sm:h-[500px] xl:h-[700px]"
           />
 
-          <div className="flex flex-col mt-5 ml-0 items-center sm:mt-10 lg:mt-0 lg:ml-5 lg:items-start">
+          <div className="flex flex-col mt-5 ml-0 items-center sm:mt-10 lg:mt-0 lg:items-start">
             <p className="text-3xl text-center lg:text-left sm:text-5xl font-semibold">
               {t("bottle.castle")} {wineBottle.name}
             </p>
@@ -56,7 +58,7 @@ const BottleInfosPage = () => {
 
             <p className="text-lg sm:text-xl text-gray-600">{wineBottle.bottleType}</p>
 
-            <p className="text-xl sm:text-2xl font-semibold mt-5 sm:mt-10">
+            <p className="text-xl sm:text-2xl font-bold text-gray-600 mt-5 sm:mt-10">
               {t("bottle.price")} {wineBottle.price} {t("bottle.unit")}
             </p>
 
@@ -64,9 +66,14 @@ const BottleInfosPage = () => {
               {t("bottle.stock")} {wineBottle.quantity}
             </p>
 
-            <div className="flex items-center">
-              <p className="text-lg sm:text-xl text-gray-600 mr-3">{t("bottle.quality")}</p>
+            <div className="flex items-center text-gray-600">
+              <p className="text-lg sm:text-xl mr-3">{t("bottle.quality")}</p>
               <RatingStars ratingString={wineBottle.quality} size={MIN_SIZE_QUALITY_STARS} />
+            </div>
+
+            <div className="text-gray-600 mt-5 sm:mt-10">
+              <p className="text-lg sm:text-xl font-bold">{t("bottle.description")}</p>
+              <p className="text-lg sm:text-xl max-w-xl text-justify">{wineBottle.description}</p>
             </div>
           </div>
         </div>
