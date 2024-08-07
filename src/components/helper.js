@@ -3,7 +3,14 @@ import { prop, head, last } from "ramda";
 import { getFormattedImage } from "../pages/helper";
 import logoSrc from '../assets/logo-vinantic.webp';
 
-export const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+export const scrollToTop = () => {
+  const element = document.getElementById("wines-list");
+  if (element) {
+    element.scrollIntoView({ behavior: "smooth" });
+  } else {
+    console.error("Element with id 'wineList' not found.");
+  }
+};
 
 export const mergeWineInfosByRef = ({ winesData, imagesData }) =>
   winesData.map((wine) => {

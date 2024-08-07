@@ -28,7 +28,7 @@ const VinanticPage = () => {
     <>
       <Header />
 
-      <div className="flex flex-col bg-gray-100 p-[3vw] pt-10">
+      <div id="wines-list" className="flex flex-col bg-gray-100 p-[3vw] pt-10">
         <SearchInputs searchText={searchText} sortBy={sortBy} handleSearchChange={handleSearchChange} handleSortChange={handleSortChange} />
 
         <div className="mt-10">
@@ -39,23 +39,21 @@ const VinanticPage = () => {
           />
         </div>
 
-        {isWinesLoading ? (
-          <div className="flex justify-center">
-            <Loader size={100} />
-          </div>
-        ) : totalWines === 0 ? (
-          <p className="mt-10 flex justify-center text-red-400">{t("warnings.no_wines_available")}</p>
-        ) : (
-          <>
-            <div className=" mt-10">
-              <WinesList list={winesList} />
-            </div>
+        {isWinesLoading
+          ? <div className="flex justify-center"><Loader size={100} /></div>
+          : totalWines === 0
+            ? <p className="mt-10 flex justify-center text-red-400">{t("warnings.no_wines_available")}</p>
+            : (
+              <>
+                <div className="mt-10">
+                  <WinesList list={winesList} />
+                </div>
 
-            <div className="mt-10">
-              <Pagination currentPage={currentPage} totalWines={totalWinesInSearch} onPageChange={handlePageChange} />
-            </div>
-          </>
-        )}
+                <div className="mt-10">
+                  <Pagination currentPage={currentPage} totalWines={totalWinesInSearch} onPageChange={handlePageChange} />
+                </div>
+              </>
+            )}
       </div>
     </>
   );
