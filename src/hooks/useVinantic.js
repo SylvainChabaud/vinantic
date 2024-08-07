@@ -4,8 +4,10 @@ import { ITEMS_PER_PAGE, SEARCH_SELECTOR_OPTIONS } from "../constants";
 
 import { exportVinanticPdf, scrollToTop } from "../components/helper";
 import { GET_GLOBAL } from "../graphql/globalQueries";
+import { useTranslation } from "react-i18next";
 
 const useVinantic = () => {
+  const { t } = useTranslation();
   const [searchText, setSearchText] = useState('');
   const [debouncedSearchText, setDebouncedSearchText] = useState('');
   const [sortBy, setSortBy] = useState(SEARCH_SELECTOR_OPTIONS.NO_SORT);
@@ -30,7 +32,7 @@ const useVinantic = () => {
 
     if (data) {
       const winesList = data.getGlobal?.data;
-      winesList && exportVinanticPdf({ winesList, setIsPdfLoading })
+      winesList && exportVinanticPdf({ winesList, setIsPdfLoading, translate: t })
     }
   };
 
