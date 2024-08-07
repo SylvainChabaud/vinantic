@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { ITEMS_PER_PAGE, SEARCH_SELECTOR_OPTIONS } from "../constants";
 
-import { exportVinanticPdf, scrollToTop } from "../components/helper";
+import { scrollToTop } from "../components/helper";
 import { GET_GLOBAL } from "../graphql/globalQueries";
 import { useTranslation } from "react-i18next";
 
@@ -14,7 +14,7 @@ const useVinantic = () => {
   const [currentWineList, setCurrentWineList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalWines, setTotalWines] = useState(0);
-  const [isPdfLoading, setIsPdfLoading] = useState(false);
+  const [totalWinesInSearch, setTotalWinesInSearch] = useState(0);
 
   const searchDebounce = useRef(null);
 
@@ -26,22 +26,13 @@ const useVinantic = () => {
     notifyOnNetworkStatusChange: true,
   });
 
-  const fetchWinesAndExportPdf = async ({ offset, limit, searchText, sortBy }) => {
-    setIsPdfLoading(true);
-    const { data } = await refetch({ offset, limit, searchText, sortBy });
-
-    if (data) {
-      const winesList = data.getGlobal?.data;
-      winesList && exportVinanticPdf({ winesList, setIsPdfLoading, translate: t })
-    }
-  };
-
   useEffect(() => {
     if (globalData && !globalLoading) {
-      const { data, totalCount } = globalData.getGlobal;
+      const { data, totalCount, totalCountInSearch } = globalData.getGlobal;
 
       if (data.length !== totalCount) {
         setTotalWines(totalCount);
+        setTotalWinesInSearch(totalCountInSearch);
         setCurrentWineList(data);
       }
     }
@@ -69,24 +60,18 @@ const useVinantic = () => {
     scrollToTop();
   };
 
-  const handleGeneratePdf = () => {
-    console.info('totalWines', totalWines);
-    fetchWinesAndExportPdf({ offset: 0, limit: totalWines, searchText: '', sortBy: SEARCH_SELECTOR_OPTIONS.NO_SORT });
-  };
-
   return {
     currentPage,
     searchText,
     sortBy,
     totalWines,
+    totalWinesInSearch,
     winesList: currentWineList,
-    isPdfLoading,
     isWinesLoading: globalLoading,
     isWinesError: globalError,
     handleSearchChange,
     handleSortChange,
     handlePageChange,
-    handleGeneratePdf,
   };
 };
 

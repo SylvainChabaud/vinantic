@@ -20,6 +20,7 @@ export const GET_GLOBAL = gql`
         description
       }
       totalCount
+      totalCountInSearch
     }
   }
 `;

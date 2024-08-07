@@ -14,6 +14,7 @@ const Pagination = ({
   for (let i = 1; i <= totalPages; i++) {
     pageNumbers.push(i);
   }
+  const isPaginable = pageNumbers.length > 1;
 
   const inactiveClass = classNames(
     "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
@@ -31,7 +32,7 @@ const Pagination = ({
   return (
     <div className="flex justify-center">
       <div className="flex flex-row">
-        <div onClick={() => onPageChange(currentPage - 1)} className={previousClass}>
+        <div onClick={() => isPaginable && onPageChange(currentPage - 1)} className={previousClass}>
           <svg
             aria-hidden="true"
             className="w-5 h-5"
@@ -59,7 +60,7 @@ const Pagination = ({
             </button>
           );
         })}
-        <div onClick={() => onPageChange(currentPage + 1)} className={nextClass}>
+        <div onClick={() => isPaginable && onPageChange(currentPage + 1)} className={nextClass}>
           <svg
             aria-hidden="true"
             className="w-5 h-5"

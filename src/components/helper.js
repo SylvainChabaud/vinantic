@@ -22,7 +22,7 @@ export const mergeWineInfosByRef = ({ winesData, imagesData }) =>
     };
   });
 
-export const exportVinanticPdf = ({ winesList, setIsPdfLoading, translate: t }) => {
+export const exportVinanticPdf = ({ winesList, translate: t }) => {
   /* MILLESIMES SORTED and GROUPED BY YEAR */
   const sortedWinesByYear = groupWinesByYear(winesList);
   const firstMill = prop("year", head(sortedWinesByYear));
@@ -363,8 +363,7 @@ export const exportVinanticPdf = ({ winesList, setIsPdfLoading, translate: t }) 
 
     /* ADD AND SAVE MAIN DIV TO PDF SPLIT PAGE OPTION (PDF_Height) */
     pdf.html(globalDivPdf, { pagesplit: true }).then(() => {
-      pdf.save("Catalogue de vins - Vinantic.pdf");
-      setIsPdfLoading(false);
+      pdf.save("Catalogue_de_vins_Vinantic.pdf");
     });
   }
 };

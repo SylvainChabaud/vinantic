@@ -4,7 +4,7 @@ import { SEARCH_SELECTOR_OPTIONS } from "../constants";
 import { Loader } from "./Loader";
 import { useTranslation } from "react-i18next";
 
-const Banner = ({ currentPage, totalWines, isPdfLoading, sortBy, handleGeneratePdf }) => {
+const Banner = ({ currentPage, totalWines, sortBy }) => {
   const { t } = useTranslation();
 
   return (
@@ -15,11 +15,11 @@ const Banner = ({ currentPage, totalWines, isPdfLoading, sortBy, handleGenerateP
         {sortBy !== SEARCH_SELECTOR_OPTIONS.NO_SORT ? t("banner.sorted_list") : t("banner.no_sorted_list")}
       </p>
 
-      <p onClick={handleGeneratePdf} className="cursor-pointer font-bold hover:text-red-900 duration-500 ease-in-out ">
-        {t("banner.upload_pdf")}
-      </p>
-
-      {isPdfLoading && <Loader size={50} />}
+      <a href="https://vinantic.fr/Catalogue_de_vins_Vinantic.pdf" target="blank">
+        <p className="cursor-pointer font-bold hover:text-red-900 duration-500 ease-in-out ">
+          {t("banner.upload_pdf")}
+        </p>
+      </a>
     </div>
   );
 };
@@ -27,9 +27,7 @@ const Banner = ({ currentPage, totalWines, isPdfLoading, sortBy, handleGenerateP
 Banner.propTypes = {
   currentPage: PropTypes.number.isRequired,
   totalWines: PropTypes.number.isRequired,
-  isPdfLoading: PropTypes.bool.isRequired,
   sortBy: PropTypes.string.isRequired,
-  handleGeneratePdf: PropTypes.func.isRequired,
 };
 
 export default Banner;

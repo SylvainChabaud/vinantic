@@ -8,6 +8,7 @@ import { getFormattedImage } from "./helper";
 import { DELETE_GLOBAL, GET_GLOBAL, GET_WINE_BOTTLE, SET_GLOBAL } from "../graphql/globalQueries";
 // import { DELETE_BOTTLES, GET_BOTTLES, SET_BOTTLES } from "../graphql/bottleQueries";
 import { useTranslation } from "react-i18next";
+import { exportVinanticPdf } from "../components/helper";
 
 const AdminPage = () => {
   const { t } = useTranslation();
@@ -110,16 +111,23 @@ const AdminPage = () => {
     },
   });
 
-  const [getWineBottle, { loading: getWineBottleLoading }] = useLazyQuery(GET_WINE_BOTTLE, {
-    onError: (error) => setBackMessage(error.message),
-    onCompleted: (data) => {
-      const { ok, message, data: wineBottle } = data.getWineBottle;
-      if (ok) {
-        // setGlobalList(global);
-        setBackMessage(message);
-      } else setBackMessage("Une erreur est survenue");
-    },
-  });
+  // const [getWineBottle, { loading: getWineBottleLoading }] = useLazyQuery(GET_WINE_BOTTLE, {
+  //   onError: (error) => setBackMessage(error.message),
+  //   onCompleted: (data) => {
+  //     const { ok, message, data: wineBottle } = data.getWineBottle;
+  //     if (ok) {
+  //       // setGlobalList(global);
+  //       setBackMessage(message);
+  //     } else setBackMessage("Une erreur est survenue");
+  //   },
+  // });
+
+  const onExportPDF = () => {
+    if (globalList) {
+      exportVinanticPdf({ winesList: globalList, translate: t });
+      setBackMessage('PDF document is generating...');
+    }
+  };
 
   useEffect(() => {
     if (backMessage)
@@ -134,7 +142,7 @@ const AdminPage = () => {
       // getImagesLoading ||
       // getBottlesLoading ||
       setGlobalLoading ||
-      getWineBottleLoading ||
+      // getWineBottleLoading ||
       // setImagesLoading ||
       // setBottlesLoading ||
       // deleteImagesLoading ||
@@ -210,12 +218,19 @@ const AdminPage = () => {
               GET GLOBAL FROM BASE
             </button>
 
-            <button
+            {isNotEmpty(globalList) && <button
+              className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10"
+              onClick={onExportPDF}
+            >
+              SET PDF DOCUMENT
+            </button>}
+
+            {/* <button
               className="transition ease-in-out delay-50 font-mono bg-gray-50 p-10 border hover:bg-gray-300 hover:text-white duration-300 mt-10"
               onClick={() => getWineBottle({ variables: { id: 5814 } })}
             >
               GET WINE BOTTLE FROM BASE
-            </button>
+            </button> */}
 
             {isNotEmpty(globalList) && (
               <table className="table-auto w-full text-left mt-10">

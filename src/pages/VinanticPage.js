@@ -14,13 +14,12 @@ const VinanticPage = () => {
     searchText,
     sortBy,
     totalWines,
+    totalWinesInSearch,
     winesList,
-    isPdfLoading,
     isWinesLoading,
     handleSearchChange,
     handleSortChange,
     handlePageChange,
-    handleGeneratePdf,
   } = useVinantic();
 
   const { t } = useTranslation();
@@ -36,13 +35,11 @@ const VinanticPage = () => {
           <Banner
             currentPage={currentPage}
             totalWines={totalWines}
-            isPdfLoading={isPdfLoading}
             sortBy={sortBy}
-            handleGeneratePdf={handleGeneratePdf}
           />
         </div>
 
-        {isWinesLoading && !isPdfLoading ? (
+        {isWinesLoading ? (
           <div className="flex justify-center">
             <Loader size={100} />
           </div>
@@ -55,7 +52,7 @@ const VinanticPage = () => {
             </div>
 
             <div className="mt-10">
-              <Pagination currentPage={currentPage} totalWines={winesList.length} onPageChange={handlePageChange} />
+              <Pagination currentPage={currentPage} totalWines={totalWinesInSearch} onPageChange={handlePageChange} />
             </div>
           </>
         )}
