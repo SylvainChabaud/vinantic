@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { SEARCH_SELECTOR_OPTIONS } from "../constants";
-import { Loader } from "./Loader";
 import { useTranslation } from "react-i18next";
 
 const Banner = ({ currentPage, totalWines, sortBy }) => {

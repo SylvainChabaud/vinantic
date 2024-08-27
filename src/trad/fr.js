@@ -1,7 +1,7 @@
 export const vinantic_french_traduction = {
   title: "Vinantic",
   description: {
-    head: "Bienvenue sur Vinantic, le lieu de rencontre des amateurs de vin et des collectionneurs ! Nous avons rassemblé les meilleurs millésimes de 1940 à nos jours pour vous offrir une expérience d'achat unique.",
+    head: "Bienvenue sur Vinantic, le lieu de rencontre des amateurs de vin et des collectionneurs ! Nous avons rassemblé les meilleurs millésimes de 1940 à nos jours pour vous offrir une expérience unique et mémorable.",
     content_1:
       "Imaginez une cave remplie de bouteilles de millésimes rares, chacune racontant une histoire, ou un moment précieux de votre vie. Ou encore, imaginez offrir une bouteille de vin millésimée à un ami pour célébrer un événement spécial, ou encore, collectionner des bouteilles de vin pour les admirer comme de véritables œuvres d'art.",
     content_2:

@@ -124,8 +124,9 @@ const AdminPage = () => {
 
   const onExportPDF = () => {
     if (globalList) {
+      // const winesList = globalList.slice(0, 5);
       exportVinanticPdf({ winesList: globalList, translate: t });
-      setBackMessage('PDF document is generating...');
+      setBackMessage('Le document PDF est en cours de construction...');
     }
   };
 
