@@ -2,6 +2,7 @@ import { jsPDF } from "jspdf";
 import { prop, head, last } from "ramda";
 import { getFormattedImage } from "../pages/helper";
 import logoSrc from '../assets/logo-vinantic.webp';
+import coverSrc from '../assets/coverPage.png';
 
 export const scrollToTop = () => {
   const element = document.getElementById("wines-list");
@@ -54,22 +55,21 @@ export const exportVinanticPdf = ({ winesList, translate: t }) => {
     globalDivPdf.style.marginLeft = `${MARGIN}px`;
     globalDivPdf.style.width = `${PDF_Width - MARGIN * 2}px`;
 
-    // /* INSERT COVER PAGE */
-    // const coverPage = document.createElement("div");
-    // coverPage.style.cssText = "display: flex; flex-direction: column; text-align: center; justify-content: center";
-    // coverPage.style.height = PDF_Height + "px";
-    // coverPage.style.fontSize = "50px";
-    // coverPage.style.fontWeight = "bold";
-    // coverPage.style.color = "#800020";
-    // coverPage.style.letterSpacing = "5px";
-    // coverPage.textContent = "VINANTIC COVER PAGE";
-    // globalDivPdf.appendChild(coverPage);
+    /* INSERT COVER PAGE */
+    const coverPage = document.createElement("div");
+    coverPage.style.cssText = "display: flex; flex-direction: column; text-align: center; justify-content: center";
+    coverPage.style.height = PDF_Height + "px";
+    const coverImg = document.createElement("img");
+    coverImg.src = coverSrc;
+    coverImg.style.height = '100%';
+    coverPage.appendChild(coverImg);
+    globalDivPdf.appendChild(coverPage);
 
-    // /* INSERT BLANCK PAGE */
-    // const blankPage = document.createElement("div");
-    // blankPage.style.cssText = "display: flex; flex-direction: column; text-align: center; justify-content: center";
-    // blankPage.style.height = PDF_Height + "px";
-    // globalDivPdf.appendChild(blankPage);
+    /* INSERT BLANCK PAGE */
+    const blankPage = document.createElement("div");
+    blankPage.style.cssText = "display: flex; flex-direction: column; text-align: center; justify-content: center";
+    blankPage.style.height = PDF_Height + "px";
+    globalDivPdf.appendChild(blankPage);
 
     /* CREATE HEADER */
     const firstPage = document.createElement("div");
@@ -204,7 +204,8 @@ export const exportVinanticPdf = ({ winesList, translate: t }) => {
 
         /* CREATE CARD CONTENT */
         const cardLeftContent = document.createElement("div");
-        cardLeftContent.style.flexGrow = "1";
+        // cardLeftContent.style.flexGrow = "1";
+        cardLeftContent.style.width = "350px";
         cardLeftContent.style.display = "flex";
         cardLeftContent.style.flexDirection = "column";
         cardLeftContent.style.justifyContent = "center";
@@ -216,11 +217,15 @@ export const exportVinanticPdf = ({ winesList, translate: t }) => {
         cardContent.style.margin = "0";
         cardContent.style.fontSize = "25px";
         cardContent.style.textAlign = "center";
-        cardContent.textContent = `${millesime.name + " - " + millesime.city}`;
+        const innerHtml = millesime.name && millesime.city
+          ? '<strong>' + millesime.name + '</strong><br>' +
+          '<span style="font-size: smaller;">' + millesime.city + '</span>'
+          : millesime.name ?? millesime.city ?? ''
+        cardContent.innerHTML = innerHtml;
         cardLeftContent.appendChild(cardContent);
 
         cardContent = document.createElement("div");
-        cardContent.style.margin = "0";
+        cardContent.style.marginTop = "15px";
         cardContent.style.fontWeight = "bold";
         cardContent.textContent = millesime.year;
         cardLeftContent.appendChild(cardContent);
@@ -359,7 +364,7 @@ export const exportVinanticPdf = ({ winesList, translate: t }) => {
 
     // Ajouter un titre au sommaire
     const title = document.createElement("h2");
-    title.style.margin = "50px 0";
+    title.style.margin = "50px 0 80px 0";
     title.style.fontSize = "30px";
     title.style.fontWeight = "bold";
     title.style.textAlign = "center";

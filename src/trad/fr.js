@@ -25,6 +25,7 @@ export const vinantic_french_traduction = {
     unit: "€",
     quality: "Qualité : ",
     description: "Description :",
+    ref: "Référence :",
   },
   general: {
     loadingMessage: "En cours de chargement...",

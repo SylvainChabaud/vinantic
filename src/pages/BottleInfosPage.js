@@ -52,17 +52,13 @@ const BottleInfosPage = () => {
             </p>
 
             <div className="flex mt-2 sm:mt-5">
-              <p className="text-2xl sm:text-3xl text-gray-600">{wineBottle.city}</p>
+              { wineBottle.city && <p className="text-2xl sm:text-3xl text-gray-600">{wineBottle.city}</p> }
               <p className="text-2xl sm:text-3xl text-gray-600 ml-3">{wineBottle.year}</p>
             </div>
 
-            <p className="text-lg sm:text-xl text-gray-600">{wineBottle.bottleType}</p>
+            <p className="text-lg sm:text-ls text-gray-600">{wineBottle.bottleType}</p>
 
-            <p className="text-xl sm:text-2xl font-bold text-gray-600 mt-5 sm:mt-10">
-              {t("bottle.price")} {wineBottle.price} {t("bottle.unit")}
-            </p>
-
-            <p className="text-lg sm:text-xl text-gray-600">
+            <p className="text-lg sm:text-xl text-gray-600 mt-5 sm:mt-10">
               {t("bottle.stock")} {wineBottle.quantity}
             </p>
 
@@ -70,6 +66,11 @@ const BottleInfosPage = () => {
               <p className="text-lg sm:text-xl mr-3">{t("bottle.quality")}</p>
               <RatingStars ratingString={wineBottle.quality} size={MIN_SIZE_QUALITY_STARS} />
             </div>
+
+            <p className="text-xl sm:text-xl font-bold text-gray-600">
+              {t("bottle.ref")} {wineBottle.id}
+              {/* {t("bottle.price")} {wineBottle.price} {t("bottle.unit")} */}
+            </p>
 
             <div className="text-gray-600 mt-5 sm:mt-10">
               <p className="text-lg sm:text-xl font-bold">{t("bottle.description")}</p>
