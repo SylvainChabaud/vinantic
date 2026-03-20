@@ -51,6 +51,7 @@ export const exportVinanticPdf = ({ winesList, translate: t }) => {
 
     /* CREATE MAIN PDF DIV */
     const globalDivPdf = document.createElement("div");
+    // globalDivPdf.className = 'vinantic-font';
     globalDivPdf.style.cssText = "display: flex; flex-direction: column; background-color: #F1F1F1;";
     globalDivPdf.style.marginLeft = `${MARGIN}px`;
     globalDivPdf.style.width = `${PDF_Width - MARGIN * 2}px`;
@@ -76,11 +77,12 @@ export const exportVinanticPdf = ({ winesList, translate: t }) => {
     firstPage.style.cssText = "display: flex; flex-direction: column; text-align: center; justify-content: center";
     firstPage.style.height = PDF_Height + "px";
 
-    /* CREATE TITLE */
     const pdfTitre = document.createElement("div");
+    pdfTitre.style.margin = '0 auto';
     pdfTitre.style.fontSize = "50px";
     pdfTitre.style.fontWeight = "bold";
     pdfTitre.style.color = "#800020";
+    pdfTitre.className = 'vinantic-font';
     pdfTitre.style.letterSpacing = "5px";
     pdfTitre.textContent = "VINANTIC";
     firstPage.appendChild(pdfTitre);
@@ -90,8 +92,10 @@ export const exportVinanticPdf = ({ winesList, translate: t }) => {
     pdfSousTitre.style.padding = '15px 0';
     pdfSousTitre.style.margin = '0 auto';
     pdfSousTitre.style.borderBottom = '1px solid #333';
-    pdfSousTitre.style.letterSpacing = "5px";
-    pdfSousTitre.style.fontSize = "15px";
+    pdfSousTitre.style.letterSpacing = "3px";
+    pdfSousTitre.style.fontSize = "17px";
+    pdfSousTitre.style.color = "#333";
+    pdfSousTitre.className = 'vinantic-font';
     pdfSousTitre.innerHTML = `<p>Millésimes de <strong>${firstMill}</strong> à <strong>${lastMill}</strong></p>`;
     firstPage.appendChild(pdfSousTitre);
 
@@ -114,7 +118,10 @@ export const exportVinanticPdf = ({ winesList, translate: t }) => {
     siteLinkDiv.style.margin = '0 auto';
     siteLinkDiv.style.marginBottom = "70px";
     siteLinkDiv.style.letterSpacing = "5px";
-    siteLinkDiv.style.fontSize = "15px";
+    siteLinkDiv.style.fontSize = "17px";
+    siteLinkDiv.style.color = "#333";
+    siteLinkDiv.style.fontWeight = "bold";
+    siteLinkDiv.className = 'vinantic-font';
     siteLinkDiv.innerHTML = `<p>www.vinantic.fr</p>`;
     firstPage.appendChild(siteLinkDiv);
 
@@ -123,6 +130,7 @@ export const exportVinanticPdf = ({ winesList, translate: t }) => {
     descriptionDiv.style.display = 'flex';
     descriptionDiv.style.textAlign = "justify";
     descriptionDiv.style.fontSize = "20px";
+    descriptionDiv.style.color = "#333";
     descriptionDiv.style.width = "50vw";
     descriptionDiv.style.margin = "0 auto";
     descriptionDiv.innerHTML = `<div>
@@ -149,14 +157,15 @@ export const exportVinanticPdf = ({ winesList, translate: t }) => {
 
       /* CREATE YEAR DIV */
       const yearDiv = document.createElement("div");
-      yearDiv.style.fontSize = "30px";
+      yearDiv.className = 'vinantic-font';
+      yearDiv.style.fontSize = "33px";
       yearDiv.style.fontWeight = "bold";
-      yearDiv.style.letterSpacing = "5px";
+      yearDiv.style.letterSpacing = "3px";
       yearDiv.style.textAlign = 'center';
       yearDiv.style.paddingBottom = '25px';
       yearDiv.style.borderBottom = '1px solid #333';
       yearDiv.innerHTML = `<div>
-        <p>Millésimes de</p>
+        <p style="color: #333;">Millésimes de</p>
         <p style="color: #800020;">${millesimeSorted.year}</p>
       </div>`;
 
@@ -204,7 +213,6 @@ export const exportVinanticPdf = ({ winesList, translate: t }) => {
 
         /* CREATE CARD CONTENT */
         const cardLeftContent = document.createElement("div");
-        // cardLeftContent.style.flexGrow = "1";
         cardLeftContent.style.width = "350px";
         cardLeftContent.style.display = "flex";
         cardLeftContent.style.flexDirection = "column";
@@ -265,7 +273,7 @@ export const exportVinanticPdf = ({ winesList, translate: t }) => {
         cardBottomMainDiv.style.paddingBottom = "20px";
         cardBottomMainDiv.style.paddingLeft = "35px";
         cardBottomMainDiv.style.borderLeft = "1px solid #333";
-        cardBottomMainDiv.textContent = `${millesime.description}`;
+        cardBottomMainDiv.textContent = millesime.description;
 
         /* **************** */
         /* CREATE MAIN CARD */
@@ -277,10 +285,8 @@ export const exportVinanticPdf = ({ winesList, translate: t }) => {
         cardMainDiv.style.flexDirection = "column";
         cardMainDiv.style.justifyContent = "center";
         cardMainDiv.style.padding = "0 100px";
-        // cardMainDiv.style.margin = "20px";
         cardMainDiv.style.gap = "120px";
         cardMainDiv.style.color = "#333";
-        // cardMainDiv.style.border = "1px solid #333";
         cardMainDiv.setAttribute("key", "liste-" + index);
         cardMainDiv.appendChild(cardTopMainDiv);
         cardMainDiv.appendChild(cardBottomMainDiv);
@@ -305,10 +311,11 @@ export const exportVinanticPdf = ({ winesList, translate: t }) => {
         vinanticDiv.style.display = 'flex';
         vinanticDiv.style.justifyContent = "center";
         vinanticDiv.style.alignItems = "center";
-        vinanticDiv.style.fontSize = "20px";
+        vinanticDiv.style.fontSize = "21px";
         vinanticDiv.style.fontWeight = "100";
         vinanticDiv.style.color = "#800020";
         vinanticDiv.style.paddingBottom = "25px";
+        vinanticDiv.className = 'vinantic-font';
         vinanticDiv.textContent = 'Vinantic';
 
         logoDiv.appendChild(vinanticDiv);
@@ -364,11 +371,13 @@ export const exportVinanticPdf = ({ winesList, translate: t }) => {
 
     // Ajouter un titre au sommaire
     const title = document.createElement("h2");
+
     title.style.margin = "50px 0 80px 0";
-    title.style.fontSize = "30px";
+    title.style.fontSize = "35px";
     title.style.fontWeight = "bold";
     title.style.textAlign = "center";
     title.style.color = "#800020";
+    title.className = 'vinantic-font';
     title.textContent = "Sommaire";
     summaryDiv.appendChild(title);
 
@@ -385,19 +394,20 @@ export const exportVinanticPdf = ({ winesList, translate: t }) => {
       entry.className = 'summary-entry';
       entry.style.display = 'flex';
       entry.style.justifyContent = 'space-between';
-      entry.style.width = '40%';
+      entry.style.width = '35%';
       entry.style.borderBottom = '1px solid #ccc';
-      entry.style.paddingBottom = '10px';
-      entry.style.marginBottom = '5px';
+      entry.style.paddingBottom = '12px';
+      entry.style.marginBottom = '7px';
       entry.style.fontSize = '15px';
+      entry.style.color = "#333";
 
       const pageSpan = document.createElement("span");
       pageSpan.className = 'page';
-      pageSpan.innerHTML = `Page  <strong>${item.page}</strong>`;
+      pageSpan.innerHTML = `Page &nbsp; <strong>${item.page}</strong>`;
 
       const yearSpan = document.createElement("span");
       yearSpan.className = 'year';
-      yearSpan.innerHTML = `<strong>${item.year}</strong>`;
+      yearSpan.innerHTML = `Année &nbsp; <strong>${item.year}</strong>`;
       yearSpan.style.textAlign = 'right';
 
       entry.appendChild(pageSpan);
@@ -413,6 +423,25 @@ export const exportVinanticPdf = ({ winesList, translate: t }) => {
     globalDivPdf.insertBefore(summaryDiv, childDivs[4]);
 
     /* CREATE PDF HANDLE */
+    // if (globalDivPdf) {
+    //   html2pdf().from(globalDivPdf).set({
+    //     margin: MARGIN,
+    //     filename: 'Catalogue_de_vins_Vinantic.pdf',
+    //     html2canvas: {
+    //       scale: 3,
+    //       useCORS: true,
+    //       // width: PDF_Width,
+    //     },
+    //     jsPDF: {
+    //       orientation: 'portrait',
+    //       unit: 'pt',
+    //       format: [PDF_Width, PDF_Height],
+    //     }
+    //   }).save();
+    // } else {
+    //   console.error("Element not found");
+    // }
+
     const pdf = new jsPDF({
       orientation: "portrait",
       unit: "pt",
