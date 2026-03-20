@@ -446,15 +446,18 @@ export const exportVinanticPdf = ({ winesList, translate: t }) => {
 
     console.info('pageInfos', { pageInfos, globalDivPdf, childDivs })
 
-    /* ADD AND SAVE MAIN DIV TO PDF SPLIT PAGE OPTION (PDF_Height) */
-    pdf.html(globalDivPdf, { pagesplit: true }).then(() => {
-      // Ajouter la cover sur la premiere page via addImage
-      const coverImg = new Image();
-      coverImg.src = coverSrc;
-      pdf.setPage(1);
-      pdf.addImage(coverImg, 'PNG', 0, 0, PDF_Width, PDF_Height);
-      pdf.save("Catalogue_de_vins_Vinantic.pdf");
-    });
+    /* PRECHARGER LA COVER AVANT DE GENERER LE PDF */
+    const coverImg = new Image();
+    coverImg.crossOrigin = 'anonymous';
+    coverImg.src = coverSrc;
+    coverImg.onload = () => {
+      /* ADD AND SAVE MAIN DIV TO PDF SPLIT PAGE OPTION (PDF_Height) */
+      pdf.html(globalDivPdf, { pagesplit: true }).then(() => {
+        pdf.setPage(1);
+        pdf.addImage(coverImg, 'PNG', 0, 0, PDF_Width, PDF_Height);
+        pdf.save("Catalogue_de_vins_Vinantic.pdf");
+      });
+    };
   }
 };
 
