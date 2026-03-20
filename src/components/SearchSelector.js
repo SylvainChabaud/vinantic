@@ -10,7 +10,7 @@ const SearchSelector = ({ sortBy, handleSortChange }) => (
   >
     <option defaultValue>{SEARCH_SELECTOR_OPTIONS.NO_SORT}</option>
     <option value="year">{SEARCH_SELECTOR_OPTIONS.YEAR}</option>
-    <option value="price">{SEARCH_SELECTOR_OPTIONS.PRICE}</option>
+    {/* <option value="price">{SEARCH_SELECTOR_OPTIONS.PRICE}</option> */}
     <option value="name">{SEARCH_SELECTOR_OPTIONS.NAME}</option>
   </select>
 );
