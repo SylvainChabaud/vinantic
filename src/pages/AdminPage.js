@@ -17,9 +17,39 @@ const AdminPage = () => {
   const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState('');
   const [backMessage, setBackMessage] = useState();
-  // const [bottlesList, setBottlesList] = useState([]);
-  // const [imagesList, setImagesList] = useState([]);
   const [globalList, setGlobalList] = useState([]);
+
+  const [deleteGlobal, { loading: deleteGlobalLoading }] = useMutation(DELETE_GLOBAL, {
+    onError: (error) => setBackMessage(error.message),
+    onCompleted: (data) => {
+      const { ok, message } = data.deleteGlobal;
+      if (ok) {
+        setBackMessage(message);
+        setGlobalList([]);
+      } else setBackMessage("Une erreur est survenue");
+    },
+  });
+
+  const [setGlobal, { loading: setGlobalLoading }] = useMutation(SET_GLOBAL, {
+    onError: (error) => setBackMessage(error.message),
+    onCompleted: (data) => {
+      const { ok, message } = data.setGlobal;
+      if (ok) setBackMessage(message);
+      else setBackMessage("Une erreur est survenue");
+    },
+  });
+
+  const [getGlobal, { loading: getGlobalLoading }] = useLazyQuery(GET_GLOBAL, {
+    onError: (error) => setBackMessage(error.message),
+    onCompleted: (data) => {
+      const { ok, message, data: global } = data.getGlobal;
+      console.info('data', data)
+      if (ok) {
+        setGlobalList(global);
+        setBackMessage(message);
+      } else setBackMessage("Une erreur est survenue");
+    },
+  });
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -33,6 +63,20 @@ const AdminPage = () => {
       setLoginError('Email ou mot de passe incorrect');
     }
   };
+
+  const onExportPDF = () => {
+    if (globalList) {
+      exportVinanticPdf({ winesList: globalList, translate: t });
+      setBackMessage('Le document PDF est en cours de construction...');
+    }
+  };
+
+  useEffect(() => {
+    if (backMessage)
+      setTimeout(() => {
+        setBackMessage(null);
+      }, 3000);
+  }, [backMessage]);
 
   if (!isAuthenticated) {
     return (
@@ -64,126 +108,6 @@ const AdminPage = () => {
       </div>
     );
   }
-
-  // const [deleteBottles, { loading: deleteBottlesLoading }] = useMutation(DELETE_BOTTLES, {
-  //   onError: (error) => setBackMessage(error.message),
-  //   onCompleted: (data) => {
-  //     const { ok, message } = data.deleteBottles;
-  //     if (ok) {
-  //       setBackMessage(message);
-  //       setBottlesList([]);
-  //     } else setBackMessage("Une erreur est survenue");
-  //   },
-  // });
-
-  // const [deleteImages, { loading: deleteImagesLoading }] = useMutation(DELETE_IMAGES, {
-  //   onError: (error) => setBackMessage(error.message),
-  //   onCompleted: (data) => {
-  //     const { ok, message } = data.deleteImages;
-  //     if (ok) {
-  //       setBackMessage(message);
-  //       setImagesList([]);
-  //     } else setBackMessage("Une erreur est survenue");
-  //   },
-  // });
-
-  const [deleteGlobal, { loading: deleteGlobalLoading }] = useMutation(DELETE_GLOBAL, {
-    onError: (error) => setBackMessage(error.message),
-    onCompleted: (data) => {
-      const { ok, message } = data.deleteGlobal;
-      if (ok) {
-        setBackMessage(message);
-        setGlobalList([]);
-      } else setBackMessage("Une erreur est survenue");
-    },
-  });
-
-  // const [setBottles, { loading: setBottlesLoading }] = useMutation(SET_BOTTLES, {
-  //   onError: (error) => setBackMessage(error.message),
-  //   onCompleted: (data) => {
-  //     const { ok, message } = data.setBottles;
-  //     if (ok) setBackMessage(message);
-  //     else setBackMessage("Une erreur est survenue");
-  //   },
-  // });
-
-  // const [setImages, { loading: setImagesLoading }] = useMutation(SET_IMAGES, {
-  //   onError: (error) => setBackMessage(error.message),
-  //   onCompleted: (data) => {
-  //     const { ok, message } = data.setImages;
-  //     if (ok) setBackMessage(message);
-  //     else setBackMessage("Une erreur est survenue");
-  //   },
-  // });
-
-  const [setGlobal, { loading: setGlobalLoading }] = useMutation(SET_GLOBAL, {
-    onError: (error) => setBackMessage(error.message),
-    onCompleted: (data) => {
-      const { ok, message } = data.setGlobal;
-      if (ok) setBackMessage(message);
-      else setBackMessage("Une erreur est survenue");
-    },
-  });
-
-  // const [getBottles, { loading: getBottlesLoading }] = useLazyQuery(GET_BOTTLES, {
-  //   onError: (error) => setBackMessage(error.message),
-  //   onCompleted: (data) => {
-  //     const { ok, message, data: bottles } = data.getBottles;
-  //     if (ok) {
-  //       setBottlesList(bottles);
-  //       setBackMessage(message);
-  //     } else setBackMessage("Une erreur est survenue");
-  //   },
-  // });
-
-  // const [getImages, { loading: getImagesLoading }] = useLazyQuery(GET_IMAGES, {
-  //   onError: (error) => setBackMessage(error.message),
-  //   onCompleted: (data) => {
-  //     const { ok, message, data: images } = data.getImages;
-  //     if (ok) {
-  //       setImagesList(images);
-  //       setBackMessage(message);
-  //     } else setBackMessage("Une erreur est survenue");
-  //   },
-  // });
-
-  const [getGlobal, { loading: getGlobalLoading }] = useLazyQuery(GET_GLOBAL, {
-    onError: (error) => setBackMessage(error.message),
-    onCompleted: (data) => {
-      const { ok, message, data: global } = data.getGlobal;
-      console.info('data', data)
-      if (ok) {
-        setGlobalList(global);
-        setBackMessage(message);
-      } else setBackMessage("Une erreur est survenue");
-    },
-  });
-
-  // const [getWineBottle, { loading: getWineBottleLoading }] = useLazyQuery(GET_WINE_BOTTLE, {
-  //   onError: (error) => setBackMessage(error.message),
-  //   onCompleted: (data) => {
-  //     const { ok, message, data: wineBottle } = data.getWineBottle;
-  //     if (ok) {
-  //       // setGlobalList(global);
-  //       setBackMessage(message);
-  //     } else setBackMessage("Une erreur est survenue");
-  //   },
-  // });
-
-  const onExportPDF = () => {
-    if (globalList) {
-      // const winesList = globalList.slice(0, 5);
-      exportVinanticPdf({ winesList: globalList, translate: t });
-      setBackMessage('Le document PDF est en cours de construction...');
-    }
-  };
-
-  useEffect(() => {
-    if (backMessage)
-      setTimeout(() => {
-        setBackMessage(null);
-      }, 3000);
-  }, [backMessage]);
 
   return (
     <div className="flex flex-col items-center">
