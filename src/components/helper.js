@@ -56,14 +56,10 @@ export const exportVinanticPdf = ({ winesList, translate: t }) => {
     globalDivPdf.style.marginLeft = `${MARGIN}px`;
     globalDivPdf.style.width = `${PDF_Width - MARGIN * 2}px`;
 
-    /* INSERT COVER PAGE */
+    /* INSERT COVER PAGE (placeholder - sera ajoutee via addImage) */
     const coverPage = document.createElement("div");
     coverPage.style.cssText = "display: flex; flex-direction: column; text-align: center; justify-content: center";
     coverPage.style.height = PDF_Height + "px";
-    const coverImg = document.createElement("img");
-    coverImg.src = coverSrc;
-    coverImg.style.height = '100%';
-    coverPage.appendChild(coverImg);
     globalDivPdf.appendChild(coverPage);
 
     /* INSERT BLANCK PAGE */
@@ -452,6 +448,11 @@ export const exportVinanticPdf = ({ winesList, translate: t }) => {
 
     /* ADD AND SAVE MAIN DIV TO PDF SPLIT PAGE OPTION (PDF_Height) */
     pdf.html(globalDivPdf, { pagesplit: true }).then(() => {
+      // Ajouter la cover sur la premiere page via addImage
+      const coverImg = new Image();
+      coverImg.src = coverSrc;
+      pdf.setPage(1);
+      pdf.addImage(coverImg, 'PNG', 0, 0, PDF_Width, PDF_Height);
       pdf.save("Catalogue_de_vins_Vinantic.pdf");
     });
   }
