@@ -12,10 +12,58 @@ import { exportVinanticPdf } from "../components/helper";
 
 const AdminPage = () => {
   const { t } = useTranslation();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
   const [backMessage, setBackMessage] = useState();
   // const [bottlesList, setBottlesList] = useState([]);
   // const [imagesList, setImagesList] = useState([]);
   const [globalList, setGlobalList] = useState([]);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (
+      loginEmail === process.env.REACT_APP_ADMIN_EMAIL &&
+      loginPassword === process.env.REACT_APP_ADMIN_PASSWORD
+    ) {
+      setIsAuthenticated(true);
+      setLoginError('');
+    } else {
+      setLoginError('Email ou mot de passe incorrect');
+    }
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-stone-200">
+        <form onSubmit={handleLogin} className="bg-white p-10 rounded-lg shadow-md w-96">
+          <h2 className="text-2xl font-bold text-center mb-8 text-gray-700">Administration</h2>
+          {loginError && <p className="text-red-500 text-center mb-4">{loginError}</p>}
+          <input
+            type="email"
+            placeholder="Email"
+            value={loginEmail}
+            onChange={(e) => setLoginEmail(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:border-gray-500"
+          />
+          <input
+            type="password"
+            placeholder="Mot de passe"
+            value={loginPassword}
+            onChange={(e) => setLoginPassword(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded mb-6 focus:outline-none focus:border-gray-500"
+          />
+          <button
+            type="submit"
+            className="w-full bg-gray-700 text-white p-3 rounded hover:bg-gray-800 transition duration-300"
+          >
+            Connexion
+          </button>
+        </form>
+      </div>
+    );
+  }
 
   // const [deleteBottles, { loading: deleteBottlesLoading }] = useMutation(DELETE_BOTTLES, {
   //   onError: (error) => setBackMessage(error.message),
@@ -239,7 +287,7 @@ const AdminPage = () => {
                   <tr className="bg-gray-200">
                     <th className="px-4 py-2">Nom</th>
                     <th className="px-4 py-2">Ville</th>
-                    <th className="px-4 py-2">Prix</th>
+                    <th className="px-4 py-2">Valeur</th>
                     <th className="px-4 py-2">Année</th>
                     <th className="px-4 py-2">Qualité</th>
                     <th className="px-4 py-2">Type de bouteille</th>
